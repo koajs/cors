@@ -10,14 +10,14 @@ kcors
 
 [npm-image]: https://img.shields.io/npm/v/kcors.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/kcors
-[travis-image]: https://img.shields.io/travis/node-modules/kcors.svg?style=flat-square
-[travis-url]: https://travis-ci.org/node-modules/kcors
-[coveralls-image]: https://img.shields.io/coveralls/node-modules/kcors.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/node-modules/kcors?branch=master
+[travis-image]: https://img.shields.io/travis/koajs/cors.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koajs/cors
+[coveralls-image]: https://img.shields.io/coveralls/koajs/cors.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/koajs/cors?branch=master
 [gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat-square
 [gittip-url]: https://www.gittip.com/fengmk2/
-[david-image]: https://img.shields.io/david/node-modules/kcors.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/kcors
+[david-image]: https://img.shields.io/david/koajs/cors.svg?style=flat-square
+[david-url]: https://david-dm.org/koajs/cors
 [download-image]: https://img.shields.io/npm/dm/kcors.svg?style=flat-square
 [download-url]: https://npmjs.org/package/kcors
 
