@@ -1,0 +1,47 @@
+{
+  "name": "kcors",
+  "version": "1.0.0",
+  "description": "Cross-Origin Resource Sharing(CORS) for koa",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "mocha --harmony --check-leaks -R spec -t 5000 test/*.test.js",
+    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 test/*.test.js",
+    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 test/*.test.js",
+    "jshint": "jshint .",
+    "autod": "autod -w --prefix '~'",
+    "cnpm": "npm install --registry=http://registry.npm.taobao.org",
+    "contributors": "contributors -f plain -o AUTHORS"
+  },
+  "dependencies": {
+    "copy-to": "~2.0.1"
+  },
+  "devDependencies": {
+    "autod": "*",
+    "contributors": "*",
+    "istanbul-harmony": "*",
+    "jshint": "*",
+    "koa": "~0.17.0",
+    "mocha": "*",
+    "supertest": "~0.15.0"
+  },
+  "homepage": "https://github.com/koajs/cors",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/koajs/cors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koajs/cors/issues",
+    "email": "m@fengmk2.com"
+  },
+  "keywords": [
+    "cors", "koa-cors", "Cross-Origin Resource Sharing", "kcors", "koa", "koajs"
+  ],
+  "engines": {
+    "node": ">= 0.11.14"
+  },
+  "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
+  "license": "MIT"
+}
