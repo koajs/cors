@@ -27,13 +27,15 @@ describe('cors.test.js', function () {
       this.body = {foo: 'bar'};
     });
 
-    it('should set `Access-Control-Allow-Origin` to * and `Access-Control-Allow-Methods`', function (done) {
+    it('should not set `Access-Control-Allow-Origin` when request Origin header missing', function (done) {
       request(app.listen())
       .get('/')
-      .expect('Access-Control-Allow-Origin', '*')
-      .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE')
       .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(200, function (err, res) {
+        assert(!err);
+        assert(!res.headers['access-control-allow-origin']);
+        done();
+      });
     });
 
     it('should set `Access-Control-Allow-Origin` to request origin header', function (done) {
@@ -45,12 +47,21 @@ describe('cors.test.js', function () {
       .expect(200, done);
     });
 
-    it('should 204 on OPTIONS request', function (done) {
+    it('should 204 on Preflight Request', function (done) {
       request(app.listen())
       .options('/')
-      .expect('Access-Control-Allow-Origin', '*')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
+      .expect('Access-Control-Allow-Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE')
       .expect(204, done);
+    });
+
+    it('should not Preflight Request if request missing Access-Control-Request-Method', function (done) {
+      request(app.listen())
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .expect(200, done);
     });
   });
 
@@ -69,34 +80,6 @@ describe('cors.test.js', function () {
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', '*')
       .expect({foo: 'bar'})
-      .expect(200, done);
-    });
-  });
-
-  describe('options.origin=false', function () {
-    var app = koa();
-    app.use(cors({
-      origin: false
-    }));
-    app.use(function* () {
-      this.body = {foo: 'bar'};
-    });
-
-    it('should disable cors', function (done) {
-      request(app.listen())
-      .get('/')
-      .set('Origin', 'http://koajs.com')
-      .expect({foo: 'bar'})
-      .expect(200, function (err, res) {
-        assert(!err);
-        assert(!res.headers['access-control-allow-origin']);
-        done();
-      });
-    });
-
-    it('should not handle OPTIONS request', function (done) {
-      request(app.listen())
-      .options('/')
       .expect(200, done);
     });
   });
@@ -126,6 +109,15 @@ describe('cors.test.js', function () {
         done();
       });
     });
+
+    it('should set access-control-allow-origin to *', function (done) {
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect({foo: 'bar'})
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect(200, done);
+    });
   });
 
   describe('options.exposeHeaders', function () {
@@ -140,6 +132,7 @@ describe('cors.test.js', function () {
 
       request(app.listen())
       .get('/')
+      .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Expose-Headers', 'content-length')
       .expect({foo: 'bar'})
       .expect(200, done);
@@ -156,6 +149,7 @@ describe('cors.test.js', function () {
 
       request(app.listen())
       .get('/')
+      .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Expose-Headers', 'content-length,x-header')
       .expect({foo: 'bar'})
       .expect(200, done);
@@ -173,10 +167,11 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Max-Age', '3600')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
     });
 
     it('should set maxAge with string', function (done) {
@@ -189,18 +184,17 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Max-Age', '3600')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
     });
-  });
 
-  describe('options.credentials', function () {
-    it('should enable Access-Control-Allow-Credentials', function (done) {
+    it('should not set maxAge on simple request', function (done) {
       var app = koa();
       app.use(cors({
-        credentials: true
+        maxAge: '3600'
       }));
       app.use(function* () {
         this.body = {foo: 'bar'};
@@ -208,9 +202,41 @@ describe('cors.test.js', function () {
 
       request(app.listen())
       .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect({foo: 'bar'})
+      .expect(200, function (err, res) {
+        assert(!err);
+        assert(!res.headers['access-control-max-age']);
+        done();
+      });
+    });
+  });
+
+  describe('options.credentials', function () {
+    var app = koa();
+    app.use(cors({
+      credentials: true
+    }));
+    app.use(function* () {
+      this.body = {foo: 'bar'};
+    });
+
+    it('should enable Access-Control-Allow-Credentials on Simple request', function (done) {
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Credentials', 'true')
       .expect({foo: 'bar'})
       .expect(200, done);
+    });
+
+    it('should enable Access-Control-Allow-Credentials on Preflight request', function (done) {
+      request(app.listen())
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'DELETE')
+      .expect('Access-Control-Allow-Credentials', 'true')
+      .expect(204, done);
     });
   });
 
@@ -225,10 +251,11 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Headers', 'X-PINGOTHER')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
     });
 
     it('should work with allowHeaders is array', function (done) {
@@ -241,10 +268,11 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Headers', 'X-PINGOTHER')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
     });
 
     it('should set Access-Control-Allow-Headers to request access-control-request-headers header', function (done) {
@@ -255,11 +283,12 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .set('access-control-request-headers', 'X-PINGOTHER')
       .expect('Access-Control-Allow-Headers', 'X-PINGOTHER')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
     });
   });
 
@@ -274,10 +303,27 @@ describe('cors.test.js', function () {
       });
 
       request(app.listen())
-      .get('/')
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Methods', 'GET,POST')
-      .expect({foo: 'bar'})
-      .expect(200, done);
+      .expect(204, done);
+    });
+
+    it('should skip allowMethods', function (done) {
+      var app = koa();
+      app.use(cors({
+        allowMethods: null
+      }));
+      app.use(function* () {
+        this.body = {foo: 'bar'};
+      });
+
+      request(app.listen())
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
+      .expect(204, done);
     });
   });
 });
