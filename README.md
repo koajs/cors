@@ -41,7 +41,7 @@ var koa = require('koa');
 var cors = require('kcors');
 
 var app = koa();
-koa.use(cors());
+app.use(cors());
 ```
 
 ## cors(options)
