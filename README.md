@@ -37,10 +37,10 @@ Enable cors with default options:
 - allowMethods: GET,HEAD,PUT,POST,DELETE
 
 ```js
-var koa = require('koa');
+var Koa = require('koa');
 var cors = require('kcors');
 
-var app = koa();
+var app = new Koa();
 app.use(cors());
 ```
 
