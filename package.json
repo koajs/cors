@@ -23,7 +23,7 @@
     "contributors": "*",
     "istanbul-harmony": "*",
     "jshint": "*",
-    "koa": "~0.17.0",
+    "koa": "^2.0.0-alpha.3",
     "mocha": "*",
     "supertest": "~0.15.0"
   },
@@ -37,7 +37,12 @@
     "email": "m@fengmk2.com"
   },
   "keywords": [
-    "cors", "koa-cors", "Cross-Origin Resource Sharing", "kcors", "koa", "koajs"
+    "cors",
+    "koa-cors",
+    "Cross-Origin Resource Sharing",
+    "kcors",
+    "koa",
+    "koajs"
   ],
   "engines": {
     "node": ">= 0.11.14"
