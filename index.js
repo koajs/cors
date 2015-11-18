@@ -51,71 +51,71 @@ module.exports = function (options) {
 
   options.credentials = !!options.credentials;
 
-  return function* cors(next) {
+  return function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps. The request is outside the scope of this specification.
-    var requestOrigin = this.get('Origin');
+    var requestOrigin = ctx.get('Origin');
     if (!requestOrigin) {
-      return yield* next;
+      return next();
     }
 
     var origin;
     if (typeof options.origin === 'function') {
-      origin = options.origin(this);
+      origin = options.origin(ctx);
       if (!origin) {
-        return yield* next;
+        return next();
       }
     } else {
       origin = options.origin || requestOrigin;
     }
 
-    if (this.method !== 'OPTIONS') {
+    if (ctx.method !== 'OPTIONS') {
       // Simple Cross-Origin Request, Actual Request, and Redirects
 
-      this.set('Access-Control-Allow-Origin', origin);
+      ctx.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        this.set('Access-Control-Allow-Credentials', 'true');
+        ctx.set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.exposeHeaders) {
-        this.set('Access-Control-Expose-Headers', options.exposeHeaders);
+        ctx.set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
-      yield* next;
+      return next();
     } else {
       // Preflight Request
 
       // If there is no Access-Control-Request-Method header or if parsing failed,
       // do not set any additional headers and terminate this set of steps.
       // The request is outside the scope of this specification.
-      if (!this.get('Access-Control-Request-Method')) {
+      if (!ctx.get('Access-Control-Request-Method')) {
         // this not preflight request, ignore it
-        return yield* next;
+        return next();
       }
 
-      this.set('Access-Control-Allow-Origin', origin);
+      ctx.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        this.set('Access-Control-Allow-Credentials', 'true');
+        ctx.set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.maxAge) {
-        this.set('Access-Control-Max-Age', options.maxAge);
+        ctx.set('Access-Control-Max-Age', options.maxAge);
       }
 
       if (options.allowMethods) {
-        this.set('Access-Control-Allow-Methods', options.allowMethods);
+        ctx.set('Access-Control-Allow-Methods', options.allowMethods);
       }
 
       var allowHeaders = options.allowHeaders;
       if (!allowHeaders) {
-        allowHeaders = this.get('Access-Control-Request-Headers');
+        allowHeaders = ctx.get('Access-Control-Request-Headers');
       }
       if (allowHeaders) {
-        this.set('Access-Control-Allow-Headers', allowHeaders);
+        ctx.set('Access-Control-Allow-Headers', allowHeaders);
       }
 
-      this.status = 204;
+      ctx.status = 204;
     }
   };
 };
