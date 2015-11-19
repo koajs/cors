@@ -8,37 +8,37 @@
  *   fengmk2 <m@fengmk2.com> (http://fengmk2.com)
  */
 
-"use strict";
+'use strict';
 
 /**
  * Module dependencies.
  */
 
-var assert = require('assert');
-var koa = require('koa');
-var request = require('supertest');
-var cors = require('../');
+const assert = require('assert');
+const Koa = require('koa');
+const request = require('supertest');
+const cors = require('../');
 
-describe('cors.test.js', function () {
-  describe('default options', function () {
-    var app = koa();
+describe('cors.test.js', function() {
+  describe('default options', function() {
+    const app = new Koa();
     app.use(cors());
-    app.use(function* () {
-      this.body = {foo: 'bar'};
+    app.use(function(ctx) {
+      ctx.body = {foo: 'bar'};
     });
 
-    it('should not set `Access-Control-Allow-Origin` when request Origin header missing', function (done) {
+    it('should not set `Access-Control-Allow-Origin` when request Origin header missing', function(done) {
       request(app.listen())
       .get('/')
       .expect({foo: 'bar'})
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(!err);
         assert(!res.headers['access-control-allow-origin']);
         done();
       });
     });
 
-    it('should set `Access-Control-Allow-Origin` to request origin header', function (done) {
+    it('should set `Access-Control-Allow-Origin` to request origin header', function(done) {
       request(app.listen())
       .get('/')
       .set('Origin', 'http://koajs.com')
@@ -47,7 +47,7 @@ describe('cors.test.js', function () {
       .expect(200, done);
     });
 
-    it('should 204 on Preflight Request', function (done) {
+    it('should 204 on Preflight Request', function(done) {
       request(app.listen())
       .options('/')
       .set('Origin', 'http://koajs.com')
@@ -57,7 +57,7 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should not Preflight Request if request missing Access-Control-Request-Method', function (done) {
+    it('should not Preflight Request if request missing Access-Control-Request-Method', function(done) {
       request(app.listen())
       .options('/')
       .set('Origin', 'http://koajs.com')
@@ -65,16 +65,16 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.origin=*', function () {
-    var app = koa();
+  describe('options.origin=*', function() {
+    const app = new Koa();
     app.use(cors({
       origin: '*'
     }));
-    app.use(function* () {
-      this.body = {foo: 'bar'};
+    app.use(function(ctx) {
+      ctx.body = {foo: 'bar'};
     });
 
-    it('should always set `Access-Control-Allow-Origin` to *', function (done) {
+    it('should always set `Access-Control-Allow-Origin` to *', function(done) {
       request(app.listen())
       .get('/')
       .set('Origin', 'http://koajs.com')
@@ -84,33 +84,33 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.origin=function', function () {
-    var app = koa();
+  describe('options.origin=function', function() {
+    const app = new Koa();
     app.use(cors({
-      origin: function (ctx) {
+      origin: function(ctx) {
         if (ctx.url === '/forbin') {
           return false;
         }
         return '*';
       }
     }));
-    app.use(function* () {
-      this.body = {foo: 'bar'};
+    app.use(function(ctx) {
+      ctx.body = {foo: 'bar'};
     });
 
-    it('should disable cors', function (done) {
+    it('should disable cors', function(done) {
       request(app.listen())
       .get('/forbin')
       .set('Origin', 'http://koajs.com')
       .expect({foo: 'bar'})
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(!err);
         assert(!res.headers['access-control-allow-origin']);
         done();
       });
     });
 
-    it('should set access-control-allow-origin to *', function (done) {
+    it('should set access-control-allow-origin to *', function(done) {
       request(app.listen())
       .get('/')
       .set('Origin', 'http://koajs.com')
@@ -120,14 +120,14 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.exposeHeaders', function () {
-    it('should Access-Control-Expose-Headers: `content-length`', function (done) {
-      var app = koa();
+  describe('options.exposeHeaders', function() {
+    it('should Access-Control-Expose-Headers: `content-length`', function(done) {
+      const app = new Koa();
       app.use(cors({
         exposeHeaders: 'content-length'
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -138,13 +138,13 @@ describe('cors.test.js', function () {
       .expect(200, done);
     });
 
-    it('should work with array', function (done) {
-      var app = koa();
+    it('should work with array', function(done) {
+      const app = new Koa();
       app.use(cors({
         exposeHeaders: ['content-length', 'x-header']
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -156,14 +156,14 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.maxAge', function () {
-    it('should set maxAge with number', function (done) {
-      var app = koa();
+  describe('options.maxAge', function() {
+    it('should set maxAge with number', function(done) {
+      const app = new Koa();
       app.use(cors({
         maxAge: 3600
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -174,13 +174,13 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should set maxAge with string', function (done) {
-      var app = koa();
+    it('should set maxAge with string', function(done) {
+      const app = new Koa();
       app.use(cors({
         maxAge: '3600'
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -191,20 +191,20 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should not set maxAge on simple request', function (done) {
-      var app = koa();
+    it('should not set maxAge on simple request', function(done) {
+      const app = new Koa();
       app.use(cors({
         maxAge: '3600'
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
       .get('/')
       .set('Origin', 'http://koajs.com')
       .expect({foo: 'bar'})
-      .expect(200, function (err, res) {
+      .expect(200, function(err, res) {
         assert(!err);
         assert(!res.headers['access-control-max-age']);
         done();
@@ -212,16 +212,16 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.credentials', function () {
-    var app = koa();
+  describe('options.credentials', function() {
+    const app = new Koa();
     app.use(cors({
       credentials: true
     }));
-    app.use(function* () {
-      this.body = {foo: 'bar'};
+    app.use(function(ctx) {
+      ctx.body = {foo: 'bar'};
     });
 
-    it('should enable Access-Control-Allow-Credentials on Simple request', function (done) {
+    it('should enable Access-Control-Allow-Credentials on Simple request', function(done) {
       request(app.listen())
       .get('/')
       .set('Origin', 'http://koajs.com')
@@ -230,7 +230,7 @@ describe('cors.test.js', function () {
       .expect(200, done);
     });
 
-    it('should enable Access-Control-Allow-Credentials on Preflight request', function (done) {
+    it('should enable Access-Control-Allow-Credentials on Preflight request', function(done) {
       request(app.listen())
       .options('/')
       .set('Origin', 'http://koajs.com')
@@ -240,14 +240,14 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.allowHeaders', function () {
-    it('should work with allowHeaders is string', function (done) {
-      var app = koa();
+  describe('options.allowHeaders', function() {
+    it('should work with allowHeaders is string', function(done) {
+      const app = new Koa();
       app.use(cors({
         allowHeaders: 'X-PINGOTHER'
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -258,13 +258,13 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should work with allowHeaders is array', function (done) {
-      var app = koa();
+    it('should work with allowHeaders is array', function(done) {
+      const app = new Koa();
       app.use(cors({
         allowHeaders: ['X-PINGOTHER']
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -275,11 +275,11 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should set Access-Control-Allow-Headers to request access-control-request-headers header', function (done) {
-      var app = koa();
+    it('should set Access-Control-Allow-Headers to request access-control-request-headers header', function(done) {
+      const app = new Koa();
       app.use(cors());
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -292,14 +292,14 @@ describe('cors.test.js', function () {
     });
   });
 
-  describe('options.allowMethods', function () {
-    it('should work with allowMethods is array', function (done) {
-      var app = koa();
+  describe('options.allowMethods', function() {
+    it('should work with allowMethods is array', function(done) {
+      const app = new Koa();
       app.use(cors({
         allowMethods: ['GET', 'POST']
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
@@ -310,13 +310,13 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
 
-    it('should skip allowMethods', function (done) {
-      var app = koa();
+    it('should skip allowMethods', function(done) {
+      const app = new Koa();
       app.use(cors({
         allowMethods: null
       }));
-      app.use(function* () {
-        this.body = {foo: 'bar'};
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
       });
 
       request(app.listen())
