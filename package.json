@@ -23,7 +23,7 @@
     "contributors": "*",
     "istanbul-harmony": "*",
     "jshint": "*",
-    "koa": "~0.17.0",
+    "koa": "^2.0.0-alpha.3",
     "mocha": "*",
     "supertest": "~0.15.0"
   },
