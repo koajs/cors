@@ -8,11 +8,10 @@
   ],
   "scripts": {
     "test": "mocha --check-leaks -R spec -t 5000 test/*.test.js",
-    "test-cov": "node node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 test/*.test.js",
-    "test-travis": "node node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 test/*.test.js",
-    "jshint": "jshint .",
+    "test-cov": "istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
+    "ci": "npm run lint && npm run test-cov",
+    "lint": "jshint .",
     "autod": "autod -w --prefix '~'",
-    "cnpm": "npm install --registry=http://registry.npm.taobao.org",
     "contributors": "contributors -f plain -o AUTHORS"
   },
   "dependencies": {
@@ -21,11 +20,11 @@
   "devDependencies": {
     "autod": "*",
     "contributors": "*",
-    "istanbul-harmony": "*",
+    "istanbul": "*",
     "jshint": "*",
-    "koa": "^2.0.0-alpha.3",
+    "koa": "next",
     "mocha": "*",
-    "supertest": "~0.15.0"
+    "supertest": "1"
   },
   "homepage": "https://github.com/koajs/cors",
   "repository": {
@@ -45,7 +44,7 @@
     "koajs"
   ],
   "engines": {
-    "node": ">= 0.11.14"
+    "node": ">= 4.3.1"
   },
   "publishConfig": {
     "tag": "next"
