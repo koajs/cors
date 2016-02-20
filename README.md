@@ -3,7 +3,7 @@ kcors
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
 
@@ -11,8 +11,8 @@ kcors
 [npm-url]: https://npmjs.org/package/kcors
 [travis-image]: https://img.shields.io/travis/koajs/cors.svg?style=flat-square
 [travis-url]: https://travis-ci.org/koajs/cors
-[coveralls-image]: https://img.shields.io/coveralls/koajs/cors.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/koajs/cors?branch=v2.x
+[codecov-image]: https://codecov.io/github/koajs/cors/coverage.svg?branch=v2.x
+[codecov-url]: https://codecov.io/github/koajs/cors?branch=v2.x
 [david-image]: https://img.shields.io/david/koajs/cors.svg?style=flat-square
 [david-url]: https://david-dm.org/koajs/cors
 [download-image]: https://img.shields.io/npm/dm/kcors.svg?style=flat-square
