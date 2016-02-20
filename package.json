@@ -1,6 +1,6 @@
 {
   "name": "kcors",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
@@ -41,6 +41,9 @@
   ],
   "engines": {
     "node": ">= 0.11.14"
+  },
+  "publishConfig": {
+    "tag": "next"
   },
   "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
   "license": "MIT"
