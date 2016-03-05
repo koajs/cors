@@ -51,7 +51,7 @@ app.use(cors());
  * CORS middleware
  *
  * @param {Object} [options]
- *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is '*'
+ *  - {String|Function(ctx)|GeneratorFunction(ctx)} origin `Access-Control-Allow-Origin`, default is '*'
  *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE'
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`

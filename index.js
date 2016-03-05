@@ -61,6 +61,9 @@ module.exports = function (options) {
     var origin;
     if (typeof options.origin === 'function') {
       origin = options.origin(this);
+      if (origin && typeof origin.next === 'function') {
+        origin = yield* origin;
+      }
       if (!origin) {
         return yield* next;
       }
