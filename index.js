@@ -60,7 +60,11 @@ module.exports = function (options) {
 
     var origin;
     if (typeof options.origin === 'function') {
-      origin = options.origin(this);
+      if (options.origin.constructor.name === 'GeneratorFunction') {
+        origin = yield* options.origin(this);
+      } else {
+        origin = options.origin(this);
+      }
       if (!origin) {
         return yield* next;
       }
