@@ -120,6 +120,42 @@ describe('cors.test.js', function () {
     });
   });
 
+  describe('options.origin=GeneratorFunction', function () {
+    var app = koa();
+    app.use(cors({
+      origin: function* (ctx) {
+        if (ctx.url === '/forbin') {
+          return false;
+        }
+        return '*';
+      }
+    }));
+    app.use(function* () {
+      this.body = {foo: 'bar'};
+    });
+
+    it('should disable cors', function (done) {
+      request(app.listen())
+      .get('/forbin')
+      .set('Origin', 'http://koajs.com')
+      .expect({foo: 'bar'})
+      .expect(200, function (err, res) {
+        assert(!err);
+        assert(!res.headers['access-control-allow-origin']);
+        done();
+      });
+    });
+
+    it('should set access-control-allow-origin to *', function (done) {
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect({foo: 'bar'})
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect(200, done);
+    });
+  });
+
   describe('options.exposeHeaders', function () {
     it('should Access-Control-Expose-Headers: `content-length`', function (done) {
       var app = koa();
