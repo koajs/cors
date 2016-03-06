@@ -7,12 +7,11 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --harmony --check-leaks -R spec -t 5000 test/*.test.js",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --check-leaks -t 5000 test/*.test.js",
-    "test-travis": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly -- --check-leaks -t 5000 test/*.test.js",
-    "jshint": "jshint .",
+    "test": "mocha --harmony -t 5000 test/*.test.js",
+    "test-cov": "node --harmony node_modules/.bin/istanbul cover _mocha -- -t 5000 test/*.test.js",
+    "ci": "npm run lint && npm run test-cov",
+    "lint": "jshint .",
     "autod": "autod -w --prefix '~'",
-    "cnpm": "npm install --registry=http://registry.npm.taobao.org",
     "contributors": "contributors -f plain -o AUTHORS"
   },
   "dependencies": {
@@ -21,11 +20,11 @@
   "devDependencies": {
     "autod": "*",
     "contributors": "*",
-    "istanbul-harmony": "*",
+    "istanbul": "*",
     "jshint": "*",
-    "koa": "~0.17.0",
+    "koa": "1",
     "mocha": "*",
-    "supertest": "~0.15.0"
+    "supertest": "1"
   },
   "homepage": "https://github.com/koajs/cors",
   "repository": {
@@ -40,7 +39,7 @@
     "cors", "koa-cors", "Cross-Origin Resource Sharing", "kcors", "koa", "koajs"
   ],
   "engines": {
-    "node": ">= 0.11.14"
+    "node": ">= 0.12.9"
   },
   "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
   "license": "MIT"
