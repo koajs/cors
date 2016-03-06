@@ -1,6 +1,4 @@
-/**!
- * kcors - index.js
- *
+/**
  * Copyright(c) koajs and other contributors.
  * MIT Licensed
  *
