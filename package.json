@@ -10,7 +10,7 @@
     "test": "mocha --check-leaks -R spec -t 5000 test/*.test.js",
     "test-cov": "istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
-    "lint": "jshint .",
+    "lint": "eslint index.js test",
     "autod": "autod -w --prefix '~'",
     "contributors": "contributors -f plain -o AUTHORS"
   },
@@ -21,10 +21,11 @@
     "autod": "*",
     "contributors": "*",
     "istanbul": "*",
-    "jshint": "*",
     "koa": "next",
     "mocha": "*",
-    "supertest": "1"
+    "supertest": "1",
+    "eslint-config-egg": "^2.0.0",
+    "eslint": "^2.3.0"
   },
   "homepage": "https://github.com/koajs/cors",
   "repository": {
