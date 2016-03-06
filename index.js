@@ -55,18 +55,18 @@ module.exports = function (options) {
     // If the Origin header is not present terminate this set of steps. The request is outside the scope of this specification.
     var requestOrigin = this.get('Origin');
     if (!requestOrigin) {
-      return yield* next;
+      return yield next;
     }
 
     var origin;
     if (typeof options.origin === 'function') {
       if (options.origin.constructor.name === 'GeneratorFunction') {
-        origin = yield* options.origin(this);
+        origin = yield options.origin(this);
       } else {
         origin = options.origin(this);
       }
       if (!origin) {
-        return yield* next;
+        return yield next;
       }
     } else {
       origin = options.origin || requestOrigin;
@@ -85,7 +85,7 @@ module.exports = function (options) {
         this.set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
-      yield* next;
+      yield next;
     } else {
       // Preflight Request
 
@@ -94,7 +94,7 @@ module.exports = function (options) {
       // The request is outside the scope of this specification.
       if (!this.get('Access-Control-Request-Method')) {
         // this not preflight request, ignore it
-        return yield* next;
+        return yield next;
       }
 
       this.set('Access-Control-Allow-Origin', origin);
