@@ -20,6 +20,7 @@ var copy = require('copy-to');
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean} credentials `Access-Control-Allow-Credentials`
+ *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  * @return {Function}
  * @api public
  */
@@ -49,6 +50,8 @@ module.exports = function (options) {
 
   options.credentials = !!options.credentials;
 
+  options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
+
   return function* cors(next) {
     // If the Origin header is not present terminate this set of steps. The request is outside the scope of this specification.
     var requestOrigin = this.get('Origin');
@@ -70,20 +73,25 @@ module.exports = function (options) {
       origin = options.origin || requestOrigin;
     }
 
+    var headersSet = {};
+
+    function set(self, key, value) {
+      self.set(key, value);
+      headersSet[key] = value;
+    }
+
     if (this.method !== 'OPTIONS') {
       // Simple Cross-Origin Request, Actual Request, and Redirects
 
-      this.set('Access-Control-Allow-Origin', origin);
+      set(this, 'Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        this.set('Access-Control-Allow-Credentials', 'true');
+        set(this, 'Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.exposeHeaders) {
-        this.set('Access-Control-Expose-Headers', options.exposeHeaders);
+        set(this, 'Access-Control-Expose-Headers', options.exposeHeaders);
       }
-
-      yield next;
     } else {
       // Preflight Request
 
@@ -95,18 +103,18 @@ module.exports = function (options) {
         return yield next;
       }
 
-      this.set('Access-Control-Allow-Origin', origin);
+      set(this, 'Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        this.set('Access-Control-Allow-Credentials', 'true');
+        set(this, 'Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.maxAge) {
-        this.set('Access-Control-Max-Age', options.maxAge);
+        set(this, 'Access-Control-Max-Age', options.maxAge);
       }
 
       if (options.allowMethods) {
-        this.set('Access-Control-Allow-Methods', options.allowMethods);
+        set(this, 'Access-Control-Allow-Methods', options.allowMethods);
       }
 
       var allowHeaders = options.allowHeaders;
@@ -114,10 +122,30 @@ module.exports = function (options) {
         allowHeaders = this.get('Access-Control-Request-Headers');
       }
       if (allowHeaders) {
-        this.set('Access-Control-Allow-Headers', allowHeaders);
+        set(this, 'Access-Control-Allow-Headers', allowHeaders);
       }
 
       this.status = 204;
+    }
+
+    if (options.keepHeadersOnError) {
+      try {
+        yield next;
+      } catch (err) {
+        err.headers = err.headers || {};
+        if (Object.assign) {
+          Object.assign(err.headers, headersSet);
+        } else {
+          for (var key in headersSet) {
+            if (headersSet.hasOwnProperty(key)) {
+              err.headers[key] = headersSet[key];
+            }
+          }
+        }
+        throw err;
+      }
+    } else {
+      yield next;
     }
   };
 };
