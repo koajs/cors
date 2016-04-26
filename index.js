@@ -1,6 +1,4 @@
-/**!
- * kcors - index.js
- *
+/**
  * Copyright(c) koajs and other contributors.
  * MIT Licensed
  *
@@ -10,7 +8,7 @@
 
 'use strict';
 
-var copy = require('copy-to');
+const copy = require('copy-to');
 
 /**
  * CORS middleware
@@ -22,12 +20,12 @@ var copy = require('copy-to');
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean} credentials `Access-Control-Allow-Credentials`
- * @return {Function}
+ * @return {Function} cors middleware
  * @api public
  */
-module.exports = function (options) {
-  var defaults = {
-    allowMethods: 'GET,HEAD,PUT,POST,DELETE'
+module.exports = function(options) {
+  const defaults = {
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE',
   };
 
   options = options || {};
@@ -52,14 +50,16 @@ module.exports = function (options) {
   options.credentials = !!options.credentials;
 
   return function cors(ctx, next) {
-    // If the Origin header is not present terminate this set of steps. The request is outside the scope of this specification.
-    var requestOrigin = ctx.get('Origin');
+    // If the Origin header is not present terminate this set of steps.
+    // The request is outside the scope of this specification.
+    const requestOrigin = ctx.get('Origin');
     if (!requestOrigin) {
       return next();
     }
 
-    var origin;
+    let origin;
     if (typeof options.origin === 'function') {
+      // FIXME: origin can be promise
       origin = options.origin(ctx);
       if (!origin) {
         return next();
@@ -70,7 +70,6 @@ module.exports = function (options) {
 
     if (ctx.method !== 'OPTIONS') {
       // Simple Cross-Origin Request, Actual Request, and Redirects
-
       ctx.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
@@ -107,7 +106,7 @@ module.exports = function (options) {
         ctx.set('Access-Control-Allow-Methods', options.allowMethods);
       }
 
-      var allowHeaders = options.allowHeaders;
+      let allowHeaders = options.allowHeaders;
       if (!allowHeaders) {
         allowHeaders = ctx.get('Access-Control-Request-Headers');
       }

@@ -5,4 +5,4 @@ node_js:
   - '5'
 script: 'npm run ci'
 after_script:
-  - 'npm i codecov && ./node_modules/.bin/codecov'
+  - 'npm i codecov && codecov'
