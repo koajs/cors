@@ -360,4 +360,68 @@ describe('cors.test.js', function () {
       .expect(204, done);
     });
   });
+
+  describe('options.headersKeptOnError', function () {
+    it('should keep CORS headers after an error', function (done) {
+      var app = koa();
+      app.use(cors());
+      app.use(function* () {
+        this.body = {foo: 'bar'};
+        throw new Error('Whoops!');
+      });
+
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect(/Error/)
+      .expect(500, done);
+    });
+
+    it('should not keep unrelated headers', function (done) {
+      var app = koa();
+      app.use(cors());
+      app.use(function* () {
+        this.body = {foo: 'bar'};
+        this.set('X-Example', 'Value');
+        throw new Error('Whoops!');
+      });
+
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect(/Error/)
+      .expect(500, function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        assert(!res.headers['x-example']);
+        done();
+      });
+    });
+
+    it('should not keep CORS headers after an error if keepHeadersOnError is false', function (done) {
+      var app = koa();
+      app.use(cors({
+        keepHeadersOnError: false
+      }));
+      app.use(function* () {
+        this.body = {foo: 'bar'};
+        throw new Error('Whoops!');
+      });
+
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect(/Error/)
+      .expect(500, function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        assert(!res.headers['access-control-allow-origin']);
+        done();
+      });
+    });
+  });
 });

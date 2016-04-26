@@ -54,6 +54,7 @@ app.use(cors());
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean} credentials `Access-Control-Allow-Credentials`
+ *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  * @return {Function}
  * @api public
  */
