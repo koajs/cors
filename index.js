@@ -20,6 +20,7 @@ const copy = require('copy-to');
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean} credentials `Access-Control-Allow-Credentials`
+ *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  * @return {Function} cors middleware
  * @api public
  */
@@ -48,6 +49,7 @@ module.exports = function(options) {
   }
 
   options.credentials = !!options.credentials;
+  options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
   return function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps.
@@ -68,19 +70,25 @@ module.exports = function(options) {
       origin = options.origin || requestOrigin;
     }
 
+    const headersSet = {};
+
+    function set(key, value) {
+      ctx.set(key, value);
+      headersSet[key] = value;
+    }
+
     if (ctx.method !== 'OPTIONS') {
       // Simple Cross-Origin Request, Actual Request, and Redirects
-      ctx.set('Access-Control-Allow-Origin', origin);
+      set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        ctx.set('Access-Control-Allow-Credentials', 'true');
+        set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.exposeHeaders) {
-        ctx.set('Access-Control-Expose-Headers', options.exposeHeaders);
+        set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
-      return next();
     } else {
       // Preflight Request
 
@@ -92,18 +100,18 @@ module.exports = function(options) {
         return next();
       }
 
-      ctx.set('Access-Control-Allow-Origin', origin);
+      set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        ctx.set('Access-Control-Allow-Credentials', 'true');
+        set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.maxAge) {
-        ctx.set('Access-Control-Max-Age', options.maxAge);
+        set('Access-Control-Max-Age', options.maxAge);
       }
 
       if (options.allowMethods) {
-        ctx.set('Access-Control-Allow-Methods', options.allowMethods);
+        set('Access-Control-Allow-Methods', options.allowMethods);
       }
 
       let allowHeaders = options.allowHeaders;
@@ -111,10 +119,20 @@ module.exports = function(options) {
         allowHeaders = ctx.get('Access-Control-Request-Headers');
       }
       if (allowHeaders) {
-        ctx.set('Access-Control-Allow-Headers', allowHeaders);
+        set('Access-Control-Allow-Headers', allowHeaders);
       }
 
       ctx.status = 204;
     }
+
+    let promise = next();
+    if (options.keepHeadersOnError) {
+      promise = promise.catch(function(err) {
+        err.headers = err.headers || {};
+        Object.assign(err.headers, headersSet);
+        throw err;
+      });
+    }
+    return promise;
   };
 };
