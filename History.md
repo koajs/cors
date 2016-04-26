@@ -1,4 +1,10 @@
 
+1.2.0 / 2016-04-27
+==================
+
+  * feat: Keep headers after an error (#11)
+  * doc: fix codecov link on readme
+
 1.1.0 / 2016-03-07
 ==================
 
