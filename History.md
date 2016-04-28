@@ -1,4 +1,11 @@
 
+2.1.0 / 2016-04-29
+==================
+
+  * feat: Keep headers after an error (#13)
+  * chore: use eslint instead of jshint (#10)
+  * test: use codecov instead of coveralls
+
 2.0.0 / 2016-02-20
 ==================
 
