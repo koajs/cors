@@ -85,6 +85,10 @@ module.exports = function (options) {
 
       set(this, 'Access-Control-Allow-Origin', origin);
 
+      if (origin !== '*'){
+        set(this, 'Vary', 'Origin');
+      }
+
       if (options.credentials === true) {
         set(this, 'Access-Control-Allow-Credentials', 'true');
       }
@@ -104,6 +108,10 @@ module.exports = function (options) {
       }
 
       set(this, 'Access-Control-Allow-Origin', origin);
+
+      if (origin !== '*'){
+        set(this, 'Vary', 'Origin');
+      }
 
       if (options.credentials === true) {
         set(this, 'Access-Control-Allow-Credentials', 'true');

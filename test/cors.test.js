@@ -42,6 +42,7 @@ describe('cors.test.js', function () {
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
       .expect({foo: 'bar'})
+      .expect('Vary', 'Origin')
       .expect(200, done);
     });
 
@@ -52,6 +53,7 @@ describe('cors.test.js', function () {
       .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE')
+      .expect('Vary', 'Origin')
       .expect(204, done);
     });
 
@@ -374,6 +376,7 @@ describe('cors.test.js', function () {
       .get('/')
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect('Vary', 'Origin')
       .expect(/Error/)
       .expect(500, done);
     });
@@ -391,6 +394,7 @@ describe('cors.test.js', function () {
       .get('/')
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect('Vary', 'Origin')
       .expect(/Error/)
       .expect(500, function (err, res) {
         if (err) {
