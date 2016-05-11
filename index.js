@@ -85,7 +85,7 @@ module.exports = function (options) {
 
       set(this, 'Access-Control-Allow-Origin', origin);
 
-      if (origin !== '*'){
+      if (origin !== '*') {
         set(this, 'Vary', 'Origin');
       }
 
