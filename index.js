@@ -8,8 +8,6 @@
 
 'use strict';
 
-const copy = require('copy-to');
-
 /**
  * CORS middleware
  *
@@ -29,8 +27,7 @@ module.exports = function(options) {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE',
   };
 
-  options = options || {};
-  copy(defaults).to(options);
+  options = Object.assign({}, defaults, options);
 
   if (Array.isArray(options.exposeHeaders)) {
     options.exposeHeaders = options.exposeHeaders.join(',');
@@ -89,6 +86,13 @@ module.exports = function(options) {
         set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
+      if (!options.keepHeadersOnError) {
+        return next();
+      }
+      return next().catch(err => {
+        err.headers = Object.assign({}, err.headers, headersSet);
+        throw err;
+      });
     } else {
       // Preflight Request
 
@@ -100,18 +104,18 @@ module.exports = function(options) {
         return next();
       }
 
-      set('Access-Control-Allow-Origin', origin);
+      ctx.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        set('Access-Control-Allow-Credentials', 'true');
+        ctx.set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.maxAge) {
-        set('Access-Control-Max-Age', options.maxAge);
+        ctx.set('Access-Control-Max-Age', options.maxAge);
       }
 
       if (options.allowMethods) {
-        set('Access-Control-Allow-Methods', options.allowMethods);
+        ctx.set('Access-Control-Allow-Methods', options.allowMethods);
       }
 
       let allowHeaders = options.allowHeaders;
@@ -119,20 +123,10 @@ module.exports = function(options) {
         allowHeaders = ctx.get('Access-Control-Request-Headers');
       }
       if (allowHeaders) {
-        set('Access-Control-Allow-Headers', allowHeaders);
+        ctx.set('Access-Control-Allow-Headers', allowHeaders);
       }
 
       ctx.status = 204;
     }
-
-    let promise = next();
-    if (options.keepHeadersOnError) {
-      promise = promise.catch(function(err) {
-        err.headers = err.headers || {};
-        Object.assign(err.headers, headersSet);
-        throw err;
-      });
-    }
-    return promise;
   };
 };

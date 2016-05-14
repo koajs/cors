@@ -7,15 +7,14 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --check-leaks -R spec -t 5000 test/*.test.js",
-    "test-cov": "istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
+    "test": "NODE_ENV=test mocha --check-leaks -R spec -t 5000 test/*.test.js",
+    "test-cov": "NODE_ENV=test istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
     "lint": "eslint index.js test",
     "autod": "autod -w --prefix '~'",
     "contributors": "contributors -f plain -o AUTHORS"
   },
   "dependencies": {
-    "copy-to": "~2.0.1"
   },
   "devDependencies": {
     "autod": "*",
