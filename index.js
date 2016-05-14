@@ -85,6 +85,14 @@ module.exports = function (options) {
 
       set(this, 'Access-Control-Allow-Origin', origin);
 
+      if (origin !== '*') {
+        if (!this.get('Vary')) {
+          set(this, 'Vary', 'Origin');
+        } else {
+          set(this, 'Vary', this.get('Vary') + ',Origin');
+        }
+      }
+
       if (options.credentials === true) {
         set(this, 'Access-Control-Allow-Credentials', 'true');
       }
@@ -116,6 +124,10 @@ module.exports = function (options) {
       }
 
       this.set('Access-Control-Allow-Origin', origin);
+
+      if (origin !== '*'){
+        set(this, 'Vary', 'Origin');
+      }
 
       if (options.credentials === true) {
         this.set('Access-Control-Allow-Credentials', 'true');
