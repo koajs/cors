@@ -378,6 +378,22 @@ describe('cors.test.js', function () {
       .expect(500, done);
     });
 
+    it('should not affect OPTIONS requests', function (done) {
+      var app = koa();
+      app.use(cors());
+      app.use(function* () {
+        this.body = {foo: 'bar'};
+        throw new Error('Whoops!');
+      });
+
+      request(app.listen())
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
+      .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect(204, done);
+    });
+
     it('should not keep unrelated headers', function (done) {
       var app = koa();
       app.use(cors());
