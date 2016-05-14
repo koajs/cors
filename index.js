@@ -92,6 +92,18 @@ module.exports = function (options) {
       if (options.exposeHeaders) {
         set(this, 'Access-Control-Expose-Headers', options.exposeHeaders);
       }
+
+      if (!options.keepHeadersOnError) {
+        return yield next;
+      }
+
+      try {
+        yield next;
+      } catch (err) {
+        err.headers = err.headers || {};
+        copy(headersSet).to(err.headers);
+        throw err;
+      }
     } else {
       // Preflight Request
 
@@ -103,18 +115,18 @@ module.exports = function (options) {
         return yield next;
       }
 
-      set(this, 'Access-Control-Allow-Origin', origin);
+      this.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        set(this, 'Access-Control-Allow-Credentials', 'true');
+        this.set('Access-Control-Allow-Credentials', 'true');
       }
 
       if (options.maxAge) {
-        set(this, 'Access-Control-Max-Age', options.maxAge);
+        this.set('Access-Control-Max-Age', options.maxAge);
       }
 
       if (options.allowMethods) {
-        set(this, 'Access-Control-Allow-Methods', options.allowMethods);
+        this.set('Access-Control-Allow-Methods', options.allowMethods);
       }
 
       var allowHeaders = options.allowHeaders;
@@ -122,30 +134,10 @@ module.exports = function (options) {
         allowHeaders = this.get('Access-Control-Request-Headers');
       }
       if (allowHeaders) {
-        set(this, 'Access-Control-Allow-Headers', allowHeaders);
+        this.set('Access-Control-Allow-Headers', allowHeaders);
       }
 
       this.status = 204;
-    }
-
-    if (options.keepHeadersOnError) {
-      try {
-        yield next;
-      } catch (err) {
-        err.headers = err.headers || {};
-        if (Object.assign) {
-          Object.assign(err.headers, headersSet);
-        } else {
-          for (var key in headersSet) {
-            if (headersSet.hasOwnProperty(key)) {
-              err.headers[key] = headersSet[key];
-            }
-          }
-        }
-        throw err;
-      }
-    } else {
-      yield next;
     }
   };
 };
