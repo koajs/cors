@@ -1,4 +1,9 @@
 
+1.2.1 / 2016-05-14
+==================
+
+  * fix: keepHeadersOnError won't affect OPTIONS request (#16)
+
 1.2.0 / 2016-04-27
 ==================
 
