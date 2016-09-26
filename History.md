@@ -1,5 +1,9 @@
 
-  * feat: add PATCH to default allowed methods
+1.3.0 / 2016-09-26
+==================
+
+  * test: run test on node 6.x instead of 5.x
+  * feat: add PATCH to default methods
 
 1.2.1 / 2016-05-14
 ==================
