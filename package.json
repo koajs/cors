@@ -11,11 +11,11 @@
     "test-cov": "node --harmony node_modules/.bin/istanbul cover _mocha -- -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
     "lint": "jshint .",
-    "autod": "autod -w --prefix '~'",
+    "autod": "autod -w --prefix '^'",
     "contributors": "contributors -f plain -o AUTHORS"
   },
   "dependencies": {
-    "copy-to": "~2.0.1"
+    "copy-to": "^2.0.1"
   },
   "devDependencies": {
     "autod": "*",

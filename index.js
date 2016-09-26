@@ -1,11 +1,3 @@
-/**
- * Copyright(c) koajs and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <m@fengmk2.com> (http://fengmk2.com)
- */
-
 'use strict';
 
 var copy = require('copy-to');
