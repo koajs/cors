@@ -1,16 +1,4 @@
-/**
- * Copyright(c) koajs and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <m@fengmk2.com> (http://fengmk2.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 const assert = require('assert');
 const Koa = require('koa');
@@ -51,7 +39,7 @@ describe('cors.test.js', function() {
       .set('Origin', 'http://koajs.com')
       .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
-      .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE')
+      .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE,PATCH')
       .expect(204, done);
     });
 
