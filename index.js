@@ -15,7 +15,7 @@ var copy = require('copy-to');
  *
  * @param {Object} [options]
  *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is request Origin header
- *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE'
+ *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE,PATCH'
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
@@ -26,7 +26,7 @@ var copy = require('copy-to');
  */
 module.exports = function (options) {
   var defaults = {
-    allowMethods: 'GET,HEAD,PUT,POST,DELETE'
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
   };
 
   options = options || {};

@@ -1,4 +1,6 @@
 
+  * feat: add PATCH to default allowed methods
+
 1.2.1 / 2016-05-14
 ==================
 
