@@ -31,7 +31,7 @@ $ npm install kcors --save
 Enable cors with default options:
 
 - origin: *
-- allowMethods: GET,HEAD,PUT,POST,DELETE
+- allowMethods: GET,HEAD,PUT,POST,DELETE,PATCH
 
 ```js
 var koa = require('koa');
@@ -49,7 +49,7 @@ app.use(cors());
  *
  * @param {Object} [options]
  *  - {String|Function(ctx)|GeneratorFunction(ctx)} origin `Access-Control-Allow-Origin`, default is '*'
- *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE'
+ *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE,PATCH'
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
