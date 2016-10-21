@@ -78,7 +78,16 @@ module.exports = function (options) {
       set(this, 'Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
-        set(this, 'Access-Control-Allow-Credentials', 'true');
+        // If the origin is set to `*`, `credentials` can't be true, so log a warning
+        // and clear the access-control-allow-credentials header.
+        if (origin === '*') {
+          //throw 'Invalid CORS settings for route `' + this.url + '`: if `origin` is \'*\', `credentials` cannot be `true` (setting `credentials` to `false` for you).');
+          this.remove('Access-Control-Allow-Credentials');
+        }
+        // Otherwise set the access-control-allow-credentials header to `true`.
+        else {
+          set(this, 'Access-Control-Allow-Credentials', 'true');
+        }
       }
 
       if (options.exposeHeaders) {

@@ -243,6 +243,22 @@ describe('cors.test.js', function () {
       this.body = {foo: 'bar'};
     });
 
+    it('should not allow origin: \'*\' and \'credentials: true\' at the same time', function (done) {
+      request(app.listen())
+      .get('/')
+      .set('Origin', '*')
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect({foo: 'bar'})
+      .expect(200, function (err, res) {
+        console.log(res);
+        if (err) {
+          return done(err);
+        }
+        assert(!res.headers['Access-Control-Allow-Credentials']);
+        done();
+      });
+    });
+
     it('should enable Access-Control-Allow-Credentials on Simple request', function (done) {
       request(app.listen())
       .get('/')
