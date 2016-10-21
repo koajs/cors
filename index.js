@@ -70,6 +70,10 @@ module.exports = function(options) {
       // Simple Cross-Origin Request, Actual Request, and Redirects
       set('Access-Control-Allow-Origin', origin);
 
+      if (origin !== '*') {
+        ctx.vary('Access-Control-Allow-Origin');
+      }
+
       if (options.credentials === true) {
         set('Access-Control-Allow-Credentials', 'true');
       }
@@ -97,6 +101,10 @@ module.exports = function(options) {
       }
 
       ctx.set('Access-Control-Allow-Origin', origin);
+
+      if (origin !== '*') {
+        ctx.vary('Access-Control-Allow-Origin');
+      }
 
       if (options.credentials === true) {
         ctx.set('Access-Control-Allow-Credentials', 'true');
