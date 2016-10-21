@@ -1,4 +1,9 @@
 
+1.3.1 / 2016-10-22
+==================
+
+  * fix: not allow origin: "*" and "credentials: true" at the same time (#24)
+
 1.3.0 / 2016-09-26
 ==================
 
