@@ -52,6 +52,8 @@ module.exports = function (options) {
     }
 
     var origin;
+    var vary = this.get('Vary');
+
     if (typeof options.origin === 'function') {
       if (options.origin.constructor.name === 'GeneratorFunction') {
         origin = yield options.origin(this);
@@ -76,6 +78,18 @@ module.exports = function (options) {
       // Simple Cross-Origin Request, Actual Request, and Redirects
 
       set(this, 'Access-Control-Allow-Origin', origin);
+
+      // If the server specifies an origin host rather than "*", 
+      // then it could also include Origin in the Vary response header to indicate to clients that server responses will differ based on the value of the Origin request header.
+      if (origin !== '*') {
+        if (!vary) {
+          set(this, 'Vary', 'Origin');
+        } else {
+          if (vary.indexOf('Origin') === -1) {
+            set(this, 'Vary', vary + ', Origin');
+          }
+        }
+      }
 
       if (options.credentials === true) {
         // If the origin is set to `*`, `credentials` can't be true, so log a warning
