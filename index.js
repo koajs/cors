@@ -52,6 +52,11 @@ module.exports = function (options) {
     }
 
     var origin;
+
+    // Always set Vary header
+    // https://github.com/rs/cors/issues/10
+    this.vary('Origin');
+
     if (typeof options.origin === 'function') {
       if (options.origin.constructor.name === 'GeneratorFunction') {
         origin = yield options.origin(this);
