@@ -29,6 +29,7 @@ describe('cors.test.js', function() {
       .get('/')
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect('Vary', 'Origin')
       .expect({foo: 'bar'})
       .expect(200, done);
     });
@@ -40,6 +41,7 @@ describe('cors.test.js', function() {
       .set('Access-Control-Request-Method', 'PUT')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE,PATCH')
+      .expect('Vary', 'Origin')
       .expect(204, done);
     });
 
@@ -76,6 +78,40 @@ describe('cors.test.js', function() {
       .expect('Access-Control-Allow-Origin', '*')
       .expect({foo: 'bar'})
       .expect(200, done);
+    });
+
+    it('should 204 on Preflight Request', function(done) {
+      request(app.listen())
+      .options('/')
+      .set('Origin', 'http://koajs.com')
+      .set('Access-Control-Request-Method', 'PUT')
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE,PATCH')
+      .expect(204, done);
+    });
+  });
+
+  describe('options.origin=http://koajs.com', function() {
+    const app = new Koa();
+    app.use(function(ctx, next) {
+      ctx.set('Vary', 'X-Vary-Header');
+      return next();
+    });
+    app.use(cors({
+      origin: 'http://koajs.com',
+    }));
+    app.use(function(ctx) {
+      ctx.body = {foo: 'bar'};
+    });
+
+    it('should append Vary header when already has a Vary header', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+        .expect('Vary', 'X-Vary-Header, Origin')
+        .expect({foo: 'bar'})
+        .expect(200, done);
     });
   });
 
