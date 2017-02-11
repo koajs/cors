@@ -44,11 +44,17 @@ module.exports = function(options) {
     // If the Origin header is not present terminate this set of steps.
     // The request is outside the scope of this specification.
     const requestOrigin = ctx.get('Origin');
+
+    // Always set Vary header
+    // https://github.com/rs/cors/issues/10
+    ctx.vary('Origin');
+
     if (!requestOrigin) {
       return next();
     }
 
     let origin;
+
     if (typeof options.origin === 'function') {
       // FIXME: origin can be promise
       origin = options.origin(ctx);
