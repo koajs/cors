@@ -1,6 +1,6 @@
 {
   "name": "kcors",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
