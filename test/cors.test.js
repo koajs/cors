@@ -49,6 +49,15 @@ describe('cors.test.js', function () {
       .set('Origin', 'http://koajs.com')
       .expect(200, done);
     });
+
+    it('should always set `Vary` to Origin', function(done) {
+       request(app.listen())
+       .get('/')
+       .set('Origin', 'http://koajs.com')
+       .expect('Vary', 'Origin')
+       .expect({foo: 'bar'})
+       .expect(200, done);
+     });
   });
 
   describe('options.origin=*', function () {
@@ -250,7 +259,6 @@ describe('cors.test.js', function () {
       .expect('Access-Control-Allow-Origin', '*')
       .expect({foo: 'bar'})
       .expect(200, function (err, res) {
-        console.log(res);
         if (err) {
           return done(err);
         }
@@ -442,6 +450,29 @@ describe('cors.test.js', function () {
         assert(!res.headers['access-control-allow-origin']);
         done();
       });
+    });
+  });
+
+  describe('other middleware has been set `Vary` header to Accept-Encoding', function() {
+    var app = koa();
+    app.use(function* (next) {
+      this.set('Vary', 'Accept-Encoding');
+      yield next;
+    });
+  
+    app.use(cors());
+  
+    app.use(function* () {
+      this.body = {foo: 'bar'};
+    });
+    
+    it('should append `Vary` header to Origin', function(done) {
+      request(app.listen())
+      .get('/')
+      .set('Origin', 'http://koajs.com')
+      .expect('Vary', 'Accept-Encoding, Origin')
+      .expect({foo: 'bar'})
+      .expect(200, done);
     });
   });
 });
