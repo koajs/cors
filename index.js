@@ -59,7 +59,7 @@ module.exports = function(options) {
       // FIXME: origin can be promise
       origin = options.origin(ctx);
       if (!origin) {
-        return next();
+        return;
       }
     } else {
       origin = options.origin || requestOrigin;
@@ -99,7 +99,7 @@ module.exports = function(options) {
       // The request is outside the scope of this specification.
       if (!ctx.get('Access-Control-Request-Method')) {
         // this not preflight request, ignore it
-        return next();
+        return;
       }
 
       ctx.set('Access-Control-Allow-Origin', origin);
