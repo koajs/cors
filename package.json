@@ -1,6 +1,6 @@
 {
   "name": "kcors",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
@@ -36,7 +36,12 @@
     "email": "m@fengmk2.com"
   },
   "keywords": [
-    "cors", "koa-cors", "Cross-Origin Resource Sharing", "kcors", "koa", "koajs"
+    "cors",
+    "koa-cors",
+    "Cross-Origin Resource Sharing",
+    "kcors",
+    "koa",
+    "koajs"
   ],
   "engines": {
     "node": ">= 0.12.9"

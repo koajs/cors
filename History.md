@@ -1,4 +1,10 @@
 
+1.3.3 / 2017-09-13
+==================
+
+**fixes**
+  * [[`aff741c`](http://github.com/koajs/cors/commit/aff741c8e5fab021b535d0184ca45f71139d1d85)] - fix: should alway set vary origin header (#37) (Yiyu He <<dead_horse@qq.com>>)
+
 1.3.2 / 2017-02-13
 ==================
 
