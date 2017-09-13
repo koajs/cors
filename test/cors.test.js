@@ -58,6 +58,14 @@ describe('cors.test.js', function () {
        .expect({foo: 'bar'})
        .expect(200, done);
      });
+
+     it('should always set `Vary` to Origin if request origin not present', function(done) {
+        request(app.listen())
+        .get('/')
+        .expect('Vary', 'Origin')
+        .expect({foo: 'bar'})
+        .expect(200, done);
+      });
   });
 
   describe('options.origin=*', function () {
@@ -459,13 +467,13 @@ describe('cors.test.js', function () {
       this.set('Vary', 'Accept-Encoding');
       yield next;
     });
-  
+
     app.use(cors());
-  
+
     app.use(function* () {
       this.body = {foo: 'bar'};
     });
-    
+
     it('should append `Vary` header to Origin', function(done) {
       request(app.listen())
       .get('/')

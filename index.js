@@ -45,6 +45,10 @@ module.exports = function (options) {
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
   return function* cors(next) {
+    // Always set Vary header
+    // https://github.com/rs/cors/issues/10
+    this.vary('Origin');
+
     // If the Origin header is not present terminate this set of steps. The request is outside the scope of this specification.
     var requestOrigin = this.get('Origin');
     if (!requestOrigin) {
@@ -52,10 +56,6 @@ module.exports = function (options) {
     }
 
     var origin;
-
-    // Always set Vary header
-    // https://github.com/rs/cors/issues/10
-    this.vary('Origin');
 
     if (typeof options.origin === 'function') {
       if (options.origin.constructor.name === 'GeneratorFunction') {
