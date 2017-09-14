@@ -32,8 +32,7 @@
     "url": "git://github.com/koajs/cors.git"
   },
   "bugs": {
-    "url": "https://github.com/koajs/cors/issues",
-    "email": "m@fengmk2.com"
+    "url": "https://github.com/koajs/cors/issues"
   },
   "keywords": [
     "cors",
@@ -46,6 +45,9 @@
   "engines": {
     "node": ">= 0.12.9"
   },
-  "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
+  "publishConfig": {
+    "tag": "latest-1"
+  },
+  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"
 }
