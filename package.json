@@ -45,9 +45,6 @@
   "engines": {
     "node": ">= 4.3.1"
   },
-  "publishConfig": {
-    "tag": "next"
-  },
   "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
   "license": "MIT"
 }
