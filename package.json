@@ -1,5 +1,5 @@
 {
-  "name": "kcors",
+  "name": "@koa/cors",
   "version": "2.2.1",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
@@ -14,8 +14,7 @@
     "autod": "autod -w --prefix '~'",
     "contributors": "contributors -f plain -o AUTHORS"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "autod": "*",
     "contributors": "*",
@@ -39,7 +38,7 @@
     "cors",
     "koa-cors",
     "Cross-Origin Resource Sharing",
-    "kcors",
+    "@koa/cors",
     "koa",
     "koajs"
   ],
