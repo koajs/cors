@@ -136,6 +136,97 @@ describe('cors.test.js', function() {
     });
   });
 
+  describe('options.origin=Promise', function() {
+    beforeEach(function() {
+      const app = new Koa();
+      app.use(cors({
+        origin(ctx) {
+          return new Promise(resolve => {
+            if (ctx.url === '/forbin') {
+              return resolve(false);
+            }
+            resolve('*');
+          });
+        },
+      }));
+      app.use(function(ctx) {
+        ctx.body = { foo: 'bar' };
+      });
+      this.server = app.listen();
+    });
+
+    afterEach(function() {
+      this.server.close();
+    });
+
+    it('should disable cors', function(done) {
+      request(this.server)
+        .get('/forbin')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, function(err, res) {
+          assert(!err);
+          assert(!res.headers['access-control-allow-origin']);
+          done();
+        });
+    });
+
+    it('should set access-control-allow-origin to *', function(done) {
+      request(this.server)
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect(200, done);
+    });
+  });
+
+  describe('options.origin=async function', function() {
+    beforeEach(function() {
+      const app = new Koa();
+      app.use(cors({
+        async origin(ctx) {
+          if (ctx.url === '/forbin') {
+            const result = await false;
+            return result;
+          }
+
+          const result = await '*';
+          return result;
+        },
+      }));
+      app.use(function(ctx) {
+        ctx.body = { foo: 'bar' };
+      });
+      this.server = app.listen();
+    });
+
+    afterEach(function() {
+      this.server.close();
+    });
+
+    it('should disable cors', function(done) {
+      request(this.server)
+        .get('/forbin')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, function(err, res) {
+          assert(!err);
+          assert(!res.headers['access-control-allow-origin']);
+          done();
+        });
+    });
+
+    it('should set access-control-allow-origin to *', function(done) {
+      request(this.server)
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect(200, done);
+    });
+  });
+
   describe('options.exposeHeaders', function() {
     it('should Access-Control-Expose-Headers: `content-length`', function(done) {
       const app = new Koa();

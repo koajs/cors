@@ -40,7 +40,7 @@ module.exports = function(options) {
   options.credentials = !!options.credentials;
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
-  return function cors(ctx, next) {
+  return async function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps.
     // The request is outside the scope of this specification.
     const requestOrigin = ctx.get('Origin');
@@ -56,8 +56,7 @@ module.exports = function(options) {
     let origin;
 
     if (typeof options.origin === 'function') {
-      // FIXME: origin can be promise
-      origin = options.origin(ctx);
+      origin = await options.origin(ctx);
       if (!origin) {
         return next();
       }
