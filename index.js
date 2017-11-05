@@ -41,90 +41,90 @@ module.exports = function(options) {
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
   return function cors(ctx, next) {
-    // If the Origin header is not present terminate this set of steps.
-    // The request is outside the scope of this specification.
-    const requestOrigin = ctx.get('Origin');
+    return new Promise(resolve => {
+      // If the Origin header is not present terminate this set of steps.
+      // The request is outside the scope of this specification.
+      const requestOrigin = ctx.get('Origin');
 
-    // Always set Vary header
-    // https://github.com/rs/cors/issues/10
-    ctx.vary('Origin');
+      // Always set Vary header
+      // https://github.com/rs/cors/issues/10
+      ctx.vary('Origin');
 
-    if (!requestOrigin) {
-      return next();
-    }
+      if (!requestOrigin) {
+        return resolve();
+      }
 
-    let origin;
+      if (typeof options.origin === 'function') {
+        return resolve(options.origin(ctx));
+      }
 
-    if (typeof options.origin === 'function') {
-      // FIXME: origin can be promise
-      origin = options.origin(ctx);
+      return resolve(options.origin || requestOrigin);
+    }).then(origin => {
       if (!origin) {
         return next();
       }
-    } else {
-      origin = options.origin || requestOrigin;
-    }
 
-    const headersSet = {};
+      const headersSet = {};
 
-    function set(key, value) {
-      ctx.set(key, value);
-      headersSet[key] = value;
-    }
-
-    if (ctx.method !== 'OPTIONS') {
-      // Simple Cross-Origin Request, Actual Request, and Redirects
-      set('Access-Control-Allow-Origin', origin);
-
-      if (options.credentials === true) {
-        set('Access-Control-Allow-Credentials', 'true');
+      function set(key, value) {
+        ctx.set(key, value);
+        headersSet[key] = value;
       }
 
-      if (options.exposeHeaders) {
-        set('Access-Control-Expose-Headers', options.exposeHeaders);
+      if (ctx.method !== 'OPTIONS') {
+        // Simple Cross-Origin Request, Actual Request, and Redirects
+        set('Access-Control-Allow-Origin', origin);
+
+        if (options.credentials === true) {
+          set('Access-Control-Allow-Credentials', 'true');
+        }
+
+        if (options.exposeHeaders) {
+          set('Access-Control-Expose-Headers', options.exposeHeaders);
+        }
+
+        if (!options.keepHeadersOnError) {
+          return next();
+        }
+        return next().catch(err => {
+          err.headers = Object.assign({}, err.headers, headersSet);
+          throw err;
+        });
       }
 
-      if (!options.keepHeadersOnError) {
+      // Preflight Request
+
+      // If there is no Access-Control-Request-Method header or if parsing failed,
+      // do not set any additional headers and terminate this set of steps.
+      // The request is outside the scope of this specification.
+      if (!ctx.get('Access-Control-Request-Method')) {
+        // this not preflight request, ignore it
         return next();
       }
-      return next().catch(err => {
-        err.headers = Object.assign({}, err.headers, headersSet);
-        throw err;
-      });
-    }
 
-    // Preflight Request
+      ctx.set('Access-Control-Allow-Origin', origin);
 
-    // If there is no Access-Control-Request-Method header or if parsing failed,
-    // do not set any additional headers and terminate this set of steps.
-    // The request is outside the scope of this specification.
-    if (!ctx.get('Access-Control-Request-Method')) {
-      // this not preflight request, ignore it
-      return next();
-    }
+      if (options.credentials === true) {
+        ctx.set('Access-Control-Allow-Credentials', 'true');
+      }
 
-    ctx.set('Access-Control-Allow-Origin', origin);
+      if (options.maxAge) {
+        ctx.set('Access-Control-Max-Age', options.maxAge);
+      }
 
-    if (options.credentials === true) {
-      ctx.set('Access-Control-Allow-Credentials', 'true');
-    }
+      if (options.allowMethods) {
+        ctx.set('Access-Control-Allow-Methods', options.allowMethods);
+      }
 
-    if (options.maxAge) {
-      ctx.set('Access-Control-Max-Age', options.maxAge);
-    }
+      let allowHeaders = options.allowHeaders;
+      if (!allowHeaders) {
+        allowHeaders = ctx.get('Access-Control-Request-Headers');
+      }
+      if (allowHeaders) {
+        ctx.set('Access-Control-Allow-Headers', allowHeaders);
+      }
 
-    if (options.allowMethods) {
-      ctx.set('Access-Control-Allow-Methods', options.allowMethods);
-    }
-
-    let allowHeaders = options.allowHeaders;
-    if (!allowHeaders) {
-      allowHeaders = ctx.get('Access-Control-Request-Headers');
-    }
-    if (allowHeaders) {
-      ctx.set('Access-Control-Allow-Headers', allowHeaders);
-    }
-
-    ctx.status = 204;
+      ctx.status = 204;
+    });
   };
 };
