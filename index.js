@@ -91,40 +91,40 @@ module.exports = function(options) {
         err.headers = Object.assign({}, err.headers, headersSet);
         throw err;
       });
-    } else {
-      // Preflight Request
-
-      // If there is no Access-Control-Request-Method header or if parsing failed,
-      // do not set any additional headers and terminate this set of steps.
-      // The request is outside the scope of this specification.
-      if (!ctx.get('Access-Control-Request-Method')) {
-        // this not preflight request, ignore it
-        return next();
-      }
-
-      ctx.set('Access-Control-Allow-Origin', origin);
-
-      if (options.credentials === true) {
-        ctx.set('Access-Control-Allow-Credentials', 'true');
-      }
-
-      if (options.maxAge) {
-        ctx.set('Access-Control-Max-Age', options.maxAge);
-      }
-
-      if (options.allowMethods) {
-        ctx.set('Access-Control-Allow-Methods', options.allowMethods);
-      }
-
-      let allowHeaders = options.allowHeaders;
-      if (!allowHeaders) {
-        allowHeaders = ctx.get('Access-Control-Request-Headers');
-      }
-      if (allowHeaders) {
-        ctx.set('Access-Control-Allow-Headers', allowHeaders);
-      }
-
-      ctx.status = 204;
     }
+
+    // Preflight Request
+
+    // If there is no Access-Control-Request-Method header or if parsing failed,
+    // do not set any additional headers and terminate this set of steps.
+    // The request is outside the scope of this specification.
+    if (!ctx.get('Access-Control-Request-Method')) {
+      // this not preflight request, ignore it
+      return next();
+    }
+
+    ctx.set('Access-Control-Allow-Origin', origin);
+
+    if (options.credentials === true) {
+      ctx.set('Access-Control-Allow-Credentials', 'true');
+    }
+
+    if (options.maxAge) {
+      ctx.set('Access-Control-Max-Age', options.maxAge);
+    }
+
+    if (options.allowMethods) {
+      ctx.set('Access-Control-Allow-Methods', options.allowMethods);
+    }
+
+    let allowHeaders = options.allowHeaders;
+    if (!allowHeaders) {
+      allowHeaders = ctx.get('Access-Control-Request-Headers');
+    }
+    if (allowHeaders) {
+      ctx.set('Access-Control-Allow-Headers', allowHeaders);
+    }
+
+    ctx.status = 204;
   };
 };

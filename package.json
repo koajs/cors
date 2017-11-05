@@ -21,9 +21,9 @@
     "istanbul": "*",
     "koa": "next",
     "mocha": "*",
-    "supertest": "1",
-    "eslint-config-egg": "^2.0.0",
-    "eslint": "^2.3.0"
+    "supertest": "3",
+    "eslint-config-egg": "^5.1.1",
+    "eslint": "^4.10.0"
   },
   "homepage": "https://github.com/koajs/cors",
   "repository": {
