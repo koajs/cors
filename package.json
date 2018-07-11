@@ -11,19 +11,19 @@
     "test-cov": "NODE_ENV=test istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
     "lint": "eslint index.js test",
-    "autod": "autod -w --prefix '~'",
-    "contributors": "contributors -f plain -o AUTHORS"
+    "autod": "autod -w --prefix '^'"
   },
-  "dependencies": {},
+  "dependencies": {
+
+  },
   "devDependencies": {
     "autod": "*",
-    "contributors": "*",
-    "istanbul": "*",
-    "koa": "next",
-    "mocha": "*",
-    "supertest": "1",
+    "eslint": "^2.3.0",
     "eslint-config-egg": "^2.0.0",
-    "eslint": "^2.3.0"
+    "istanbul": "*",
+    "koa": "^2.5.1",
+    "mocha": "3",
+    "supertest": "^3.1.0"
   },
   "homepage": "https://github.com/koajs/cors",
   "repository": {
@@ -31,8 +31,7 @@
     "url": "git://github.com/koajs/cors.git"
   },
   "bugs": {
-    "url": "https://github.com/koajs/cors/issues",
-    "email": "m@fengmk2.com"
+    "url": "https://github.com/koajs/cors/issues"
   },
   "keywords": [
     "cors",
@@ -43,8 +42,8 @@
     "koajs"
   ],
   "engines": {
-    "node": ">= 4.3.1"
+    "node": ">= 6.0.0"
   },
-  "author": "fengmk2 <m@fengmk2.com> (http://fengmk2.com)",
+  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"
 }
