@@ -1,6 +1,6 @@
 {
   "name": "@koa/cors",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
@@ -13,9 +13,7 @@
     "lint": "eslint index.js test",
     "autod": "autod -w --prefix '^'"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "autod": "*",
     "eslint": "^2.3.0",
