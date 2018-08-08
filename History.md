@@ -1,4 +1,14 @@
 
+2.2.2 / 2018-07-11
+==================
+
+**others**
+  * [[`019ec40`](http://github.com/koajs/cors/commit/019ec403be573177e8ed6ad3ef4077b82b5ea934)] - travis: test node@10 and drop test node@4 (#51) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`6e22833`](http://github.com/koajs/cors/commit/6e22833ce125ca334b68980372065867eda892b0)] - doc: update outdated options doc (Xingan Wang <<wangxgwxg@gmail.com>>)
+  * [[`c982530`](http://github.com/koajs/cors/commit/c9825308ce1c76810468bdf5a404b838206fba22)] - travis: test node@8 (jongleberry <<me@jongleberry.com>>)
+  * [[`b4f65b3`](http://github.com/koajs/cors/commit/b4f65b39b558b870521e6613aee58898e88196f9)] - npm: remove  tag (jongleberry <<me@jongleberry.com>>)
+  * [[`878ae9b`](http://github.com/koajs/cors/commit/878ae9b0c99fb6da8d3840e502d4968a65089e28)] - package: rename to @koa/cors (jongleberry <<me@jongleberry.com>>)
+
 2.2.1 / 2017-02-12
 ==================
 
