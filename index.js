@@ -1,5 +1,13 @@
 'use strict';
 
+function getVaryHeaderPrefix(headers) {
+  const vary = headers.vary || headers.Vary;
+  if (vary && vary.search(/origin/i) === -1 && vary.indexOf('*') === -1) {
+    return vary + ', ';
+  }
+  return '';
+}
+
 /**
  * CORS middleware
  *
@@ -88,7 +96,12 @@ module.exports = function(options) {
         return next();
       }
       return next().catch(err => {
-        err.headers = Object.assign({}, err.headers, headersSet);
+        const errHeadersSet = err.headers || {};
+        const varyWithOrigin = getVaryHeaderPrefix(errHeadersSet) + 'Origin';
+        delete errHeadersSet.Vary;
+
+        err.headers = Object.assign({}, errHeadersSet, headersSet, {vary: varyWithOrigin});
+
         throw err;
       });
     } else {

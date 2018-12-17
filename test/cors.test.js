@@ -335,6 +335,7 @@ describe('cors.test.js', function() {
       .get('/')
       .set('Origin', 'http://koajs.com')
       .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+      .expect('Vary', 'Origin')
       .expect(/Error/)
       .expect(500, done);
     });
@@ -397,6 +398,7 @@ describe('cors.test.js', function() {
           return done(err);
         }
         assert(!res.headers['access-control-allow-origin']);
+        assert(!res.headers['vary']);
         done();
       });
     });
@@ -422,6 +424,24 @@ describe('cors.test.js', function() {
       .expect('Vary', 'Accept-Encoding, Origin')
       .expect({foo: 'bar'})
       .expect(200, done);
+    });
+    it('should append `Vary` header to an error', function(done) {
+      const app = new Koa();
+      app.use(cors());
+
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
+        const error = new Error('Whoops!');
+        error.headers = {Vary: 'Accept-Encoding'};
+        throw error;
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Vary', 'Accept-Encoding, Origin')
+        .expect(/Error/)
+        .expect(500, done);
     });
   });
 });
