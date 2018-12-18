@@ -425,7 +425,9 @@ describe('cors.test.js', function() {
       .expect({foo: 'bar'})
       .expect(200, done);
     });
-    it('should append `Vary` header to an error', function(done) {
+  });
+  describe('other middleware has set vary header on Error', function() {
+    it('should append `Origin to other `Vary` header', function(done) {
       const app = new Koa();
       app.use(cors());
 
@@ -440,6 +442,42 @@ describe('cors.test.js', function() {
         .get('/')
         .set('Origin', 'http://koajs.com')
         .expect('Vary', 'Accept-Encoding, Origin')
+        .expect(/Error/)
+        .expect(500, done);
+    });
+    it('should preserve `Vary: *`', function(done) {
+      const app = new Koa();
+      app.use(cors());
+
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
+        const error = new Error('Whoops!');
+        error.headers = {Vary: '*'};
+        throw error;
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Vary', '*')
+        .expect(/Error/)
+        .expect(500, done);
+    });
+    it('should not append Origin` if already present in `Vary`', function(done) {
+      const app = new Koa();
+      app.use(cors());
+
+      app.use(function(ctx) {
+        ctx.body = {foo: 'bar'};
+        const error = new Error('Whoops!');
+        error.headers = {Vary: 'Origin, Accept-Encoding'};
+        throw error;
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Vary', 'Origin, Accept-Encoding')
         .expect(/Error/)
         .expect(500, done);
     });
