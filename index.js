@@ -1,12 +1,6 @@
 'use strict';
 
-function getVaryHeaderPrefix(headers) {
-  const vary = headers.vary || headers.Vary;
-  if (vary && vary.search(/origin/i) === -1 && vary.indexOf('*') === -1) {
-    return vary + ', ';
-  }
-  return '';
-}
+const vary = require('vary');
 
 /**
  * CORS middleware
@@ -97,7 +91,7 @@ module.exports = function(options) {
       }
       return next().catch(err => {
         const errHeadersSet = err.headers || {};
-        const varyWithOrigin = getVaryHeaderPrefix(errHeadersSet) + 'Origin';
+        const varyWithOrigin = vary.append(errHeadersSet.vary || errHeadersSet.Vary || '', 'Origin');
         delete errHeadersSet.Vary;
 
         err.headers = Object.assign({}, errHeadersSet, headersSet, {vary: varyWithOrigin});

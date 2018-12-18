@@ -13,7 +13,9 @@
     "lint": "eslint index.js test",
     "autod": "autod -w --prefix '^'"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vary": "^1.1.2"
+  },
   "devDependencies": {
     "autod": "*",
     "eslint": "^2.3.0",
