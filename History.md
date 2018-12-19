@@ -1,4 +1,10 @@
 
+2.2.3 / 2018-12-19
+==================
+
+**fixes**
+  * [[`12ae730`](http://github.com/koajs/cors/commit/12ae7306e8055322e6c5d29319330da52ba0e126)] - fix: set `Vary: Origin` header on error responses (#55) (Erik Fried <<erik.fried@aftonbladet.se>>)
+
 2.2.2 / 2018-07-11
 ==================
 
