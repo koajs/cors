@@ -1,5 +1,7 @@
 'use strict';
 
+const vary = require('vary');
+
 /**
  * CORS middleware
  *
@@ -88,7 +90,12 @@ module.exports = function(options) {
         return next();
       }
       return next().catch(err => {
-        err.headers = Object.assign({}, err.headers, headersSet);
+        const errHeadersSet = err.headers || {};
+        const varyWithOrigin = vary.append(errHeadersSet.vary || errHeadersSet.Vary || '', 'Origin');
+        delete errHeadersSet.Vary;
+
+        err.headers = Object.assign({}, errHeadersSet, headersSet, {vary: varyWithOrigin});
+
         throw err;
       });
     } else {
