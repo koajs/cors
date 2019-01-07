@@ -43,11 +43,11 @@ describe('cors.test.js', function() {
       .expect(204, done);
     });
 
-    it('should not Preflight Request if request missing Access-Control-Request-Method', function(done) {
+    it('should skip if request missing Access-Control-Request-Method', function(done) {
       request(app.listen())
       .options('/')
       .set('Origin', 'http://koajs.com')
-      .expect(200, done);
+      .expect(404, done);
     });
 
     it('should always set `Vary` to Origin', function(done) {
@@ -83,7 +83,7 @@ describe('cors.test.js', function() {
     const app = new Koa();
     app.use(cors({
       origin: function(ctx) {
-        if (ctx.url === '/forbin') {
+        if (ctx.get('origin') === 'forbin') {
           return false;
         }
         return '*';
@@ -93,16 +93,11 @@ describe('cors.test.js', function() {
       ctx.body = {foo: 'bar'};
     });
 
-    it('should disable cors', function(done) {
+    it('should skip if origin not allowed', function(done) {
       request(app.listen())
       .get('/forbin')
-      .set('Origin', 'http://koajs.com')
-      .expect({foo: 'bar'})
-      .expect(200, function(err, res) {
-        assert(!err);
-        assert(!res.headers['access-control-allow-origin']);
-        done();
-      });
+      .set('Origin', 'forbin')
+      .expect(404, done);
     });
 
     it('should set access-control-allow-origin to *', function(done) {
