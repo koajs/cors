@@ -1,4 +1,10 @@
 
+3.0.0 / 2019-03-11
+==================
+
+**others**
+  * [[`369d31d`](http://github.com/koajs/cors/commit/369d31db7835ed344011706f9506d45a44638017)] - refactor: use async function, support options.origin return promise (#59) (Yiyu He <<dead_horse@qq.com>>)
+
 2.2.3 / 2018-12-19
 ==================
 
