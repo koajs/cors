@@ -42,7 +42,7 @@ module.exports = function(options) {
   options.credentials = !!options.credentials;
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
-  return function cors(ctx, next) {
+  return async function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps.
     // The request is outside the scope of this specification.
     const requestOrigin = ctx.get('Origin');
@@ -51,18 +51,13 @@ module.exports = function(options) {
     // https://github.com/rs/cors/issues/10
     ctx.vary('Origin');
 
-    if (!requestOrigin) {
-      return next();
-    }
+    if (!requestOrigin) return await next();
 
     let origin;
-
     if (typeof options.origin === 'function') {
-      // FIXME: origin can be promise
       origin = options.origin(ctx);
-      if (!origin) {
-        return next();
-      }
+      if (origin instanceof Promise) origin = await origin;
+      if (!origin) return await next();
     } else {
       origin = options.origin || requestOrigin;
     }
@@ -87,17 +82,19 @@ module.exports = function(options) {
       }
 
       if (!options.keepHeadersOnError) {
-        return next();
+        return await next();
       }
-      return next().catch(err => {
+      try {
+        return await next();
+      } catch (err) {
         const errHeadersSet = err.headers || {};
         const varyWithOrigin = vary.append(errHeadersSet.vary || errHeadersSet.Vary || '', 'Origin');
         delete errHeadersSet.Vary;
 
-        err.headers = Object.assign({}, errHeadersSet, headersSet, {vary: varyWithOrigin});
+        err.headers = Object.assign({}, errHeadersSet, headersSet, { vary: varyWithOrigin });
 
         throw err;
-      });
+      }
     } else {
       // Preflight Request
 
@@ -106,7 +103,7 @@ module.exports = function(options) {
       // The request is outside the scope of this specification.
       if (!ctx.get('Access-Control-Request-Method')) {
         // this not preflight request, ignore it
-        return next();
+        return await next();
       }
 
       ctx.set('Access-Control-Allow-Origin', origin);
