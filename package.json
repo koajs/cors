@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "autod": "*",
-    "eslint": "^2.3.0",
-    "eslint-config-egg": "^2.0.0",
+    "eslint": "^5.15.1",
+    "eslint-config-egg": "^7.1.0",
     "istanbul": "*",
     "koa": "^2.5.1",
     "mocha": "3",
@@ -42,7 +42,7 @@
     "koajs"
   ],
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"
