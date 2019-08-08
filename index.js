@@ -51,7 +51,7 @@ module.exports = function(options) {
     // https://github.com/rs/cors/issues/10
     ctx.vary('Origin');
 
-    if (!requestOrigin) await next();
+    if (!requestOrigin) return next();
 
     let origin;
     if (typeof options.origin === 'function') {
