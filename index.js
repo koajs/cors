@@ -57,7 +57,7 @@ module.exports = function(options) {
     if (typeof options.origin === 'function') {
       origin = options.origin(ctx);
       if (origin instanceof Promise) origin = await origin;
-      if (!origin) return await next();
+      if (!origin) return next();
     } else {
       origin = options.origin || requestOrigin;
     }
@@ -81,9 +81,8 @@ module.exports = function(options) {
         set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
-      if (!options.keepHeadersOnError) {
-        return await next();
-      }
+      if (!options.keepHeadersOnError) return next();
+
       try {
         return await next();
       } catch (err) {
