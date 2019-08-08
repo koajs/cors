@@ -47,6 +47,7 @@ describe('cors.test.js', function() {
       request(app.listen())
         .options('/')
         .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
         .expect(200, done);
     });
 

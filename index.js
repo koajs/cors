@@ -69,7 +69,7 @@ module.exports = function(options) {
       headersSet[key] = value;
     }
 
-    if (ctx.method !== 'OPTIONS') {
+    if (ctx.method !== 'OPTIONS' || !ctx.get('Access-Control-Request-Method')) {
       // Simple Cross-Origin Request, Actual Request, and Redirects
       set('Access-Control-Allow-Origin', origin);
 
@@ -97,15 +97,6 @@ module.exports = function(options) {
       }
     } else {
       // Preflight Request
-
-      // If there is no Access-Control-Request-Method header or if parsing failed,
-      // do not set any additional headers and terminate this set of steps.
-      // The request is outside the scope of this specification.
-      if (!ctx.get('Access-Control-Request-Method')) {
-        // this not preflight request, ignore it
-        return await next();
-      }
-
       ctx.set('Access-Control-Allow-Origin', origin);
 
       if (options.credentials === true) {
