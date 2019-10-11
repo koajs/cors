@@ -23,7 +23,7 @@ module.exports = function(options) {
 
   options = {
     ...defaults,
-    ...options
+    ...options,
   };
 
   if (Array.isArray(options.exposeHeaders)) {
