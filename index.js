@@ -64,6 +64,7 @@ module.exports = function(options) {
     let credentials;
     if (typeof options.credentials === 'function') {
       credentials = options.credentials(ctx);
+      if (credentials instanceof Promise) credentials = await credentials;
     } else {
       credentials = !!options.credentials;
     }
