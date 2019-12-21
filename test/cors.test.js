@@ -372,8 +372,8 @@ describe('cors.test.js', function() {
   describe('options.credentials=async function', function() {
     const app = new Koa();
     app.use(cors({
-      async credentials(ctx) {
-        return ctx.url !== '/forbin';
+      async credentials() {
+        return true;
       },
     }));
     app.use(function(ctx) {
