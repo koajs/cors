@@ -39,7 +39,6 @@ module.exports = function(options) {
     options.maxAge = String(options.maxAge);
   }
 
-  options.credentials = !!options.credentials;
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
 
   return async function cors(ctx, next) {
@@ -62,6 +61,14 @@ module.exports = function(options) {
       origin = options.origin || requestOrigin;
     }
 
+    let credentials;
+    if (typeof options.credentials === 'function') {
+      credentials = options.credentials(ctx);
+      if (credentials instanceof Promise) credentials = await credentials;
+    } else {
+      credentials = !!options.credentials;
+    }
+
     const headersSet = {};
 
     function set(key, value) {
@@ -73,7 +80,7 @@ module.exports = function(options) {
       // Simple Cross-Origin Request, Actual Request, and Redirects
       set('Access-Control-Allow-Origin', origin);
 
-      if (options.credentials === true) {
+      if (credentials === true) {
         set('Access-Control-Allow-Credentials', 'true');
       }
 
@@ -108,7 +115,7 @@ module.exports = function(options) {
 
       ctx.set('Access-Control-Allow-Origin', origin);
 
-      if (options.credentials === true) {
+      if (credentials === true) {
         ctx.set('Access-Control-Allow-Credentials', 'true');
       }
 
