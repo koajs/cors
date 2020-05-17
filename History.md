@@ -1,4 +1,14 @@
 
+3.1.0 / 2020-05-17
+==================
+
+**features**
+  * [[`013662a`](http://github.com/koajs/cors/commit/013662ae1ab65c4af230c17dfa1044609502b15b)] - feat: add support for using a function to determine whether or not to allow credentials. (#68) (mcohen75 <<mcohen75@gmail.com>>)
+
+**others**
+  * [[`da84dec`](http://github.com/koajs/cors/commit/da84dec7fa16af95d157a549bd473e7bfa4aa152)] - docs: update install script (dead-horse <<dead_horse@qq.com>>)
+  * [[`eba3b44`](http://github.com/koajs/cors/commit/eba3b446055bd14b86d19dfc81d8ed5f83a8a534)] - chore: ES6 Object spread (#66) (Alpha <<AlphaWong@users.noreply.github.com>>)
+
 3.0.0 / 2019-03-11
 ==================
 
