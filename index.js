@@ -53,13 +53,13 @@ module.exports = function(options) {
     // https://github.com/rs/cors/issues/10
     ctx.vary('Origin');
 
-    if (!requestOrigin) return await next();
+    if (!requestOrigin) return next();
 
     let origin;
     if (typeof options.origin === 'function') {
       origin = options.origin(ctx);
       if (origin instanceof Promise) origin = await origin;
-      if (!origin) return await next();
+      if (!origin) return next();
     } else {
       origin = options.origin || requestOrigin;
     }
@@ -79,7 +79,7 @@ module.exports = function(options) {
       headersSet[key] = value;
     }
 
-    if (ctx.method !== 'OPTIONS') {
+    if (ctx.method !== 'OPTIONS' || !ctx.get('Access-Control-Request-Method')) {
       // Simple Cross-Origin Request, Actual Request, and Redirects
       set('Access-Control-Allow-Origin', origin);
 
@@ -91,9 +91,8 @@ module.exports = function(options) {
         set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
-      if (!options.keepHeadersOnError) {
-        return await next();
-      }
+      if (!options.keepHeadersOnError) return next();
+
       try {
         return await next();
       } catch (err) {
@@ -110,15 +109,6 @@ module.exports = function(options) {
       }
     } else {
       // Preflight Request
-
-      // If there is no Access-Control-Request-Method header or if parsing failed,
-      // do not set any additional headers and terminate this set of steps.
-      // The request is outside the scope of this specification.
-      if (!ctx.get('Access-Control-Request-Method')) {
-        // this not preflight request, ignore it
-        return await next();
-      }
-
       ctx.set('Access-Control-Allow-Origin', origin);
 
       if (credentials === true) {
