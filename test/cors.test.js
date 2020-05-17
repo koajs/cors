@@ -115,6 +115,35 @@ describe('cors.test.js', function() {
     });
   });
 
+  describe('options.origin=AsyncFunction', function() {
+    const asyncPromise = () => {
+      return '*';
+    };
+
+    asyncPromise.constructor = {
+      name: 'AsyncFunction',
+    };
+
+    const app = new Koa();
+    app.use(cors({
+      origin: asyncPromise,
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should allow ES2018 async functions', function(done) {
+      assert(asyncPromise.constructor.name === 'AsyncFunction');
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect(200, done);
+    });
+  });
+
   describe('options.origin=async function', function() {
     const app = new Koa();
     app.use(cors({
