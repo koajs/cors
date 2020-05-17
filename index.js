@@ -21,7 +21,10 @@ module.exports = function(options) {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
-  options = Object.assign({}, defaults, options);
+  options = {
+    ...defaults,
+    ...options,
+  };
 
   if (Array.isArray(options.exposeHeaders)) {
     options.exposeHeaders = options.exposeHeaders.join(',');
@@ -98,8 +101,11 @@ module.exports = function(options) {
         const varyWithOrigin = vary.append(errHeadersSet.vary || errHeadersSet.Vary || '', 'Origin');
         delete errHeadersSet.Vary;
 
-        err.headers = Object.assign({}, errHeadersSet, headersSet, { vary: varyWithOrigin });
-
+        err.headers = {
+          ...errHeadersSet,
+          ...headersSet,
+          ...{ vary: varyWithOrigin },
+        };
         throw err;
       }
     } else {
