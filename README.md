@@ -23,7 +23,7 @@
 ## Installation
 
 ```bash
-$ npm install @koa/cors@2 --save
+$ npm install @koa/cors --save
 ```
 
 ## Quick start
