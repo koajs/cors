@@ -24,7 +24,10 @@
 
 ```bash
 $ npm install @koa/cors --save
+$ yarn add @koa/cors
 ```
+
+
 
 ## Quick start
 
