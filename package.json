@@ -1,49 +1,62 @@
 {
   "name": "@koa/cors",
   "version": "3.1.0",
-  "description": "Cross-Origin Resource Sharing(CORS) for koa",
+  "description": "Cross-Origin Resource Sharing(CORS) for Koa.js",
   "main": "index.js",
   "files": [
     "index.js"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/koajs/cors.git"
+  },
   "scripts": {
-    "test": "NODE_ENV=test mocha --check-leaks -R spec -t 5000 test/*.test.js",
-    "test-cov": "NODE_ENV=test istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
+    "test": "cross-env NODE_ENV=test mocha --exit --check-leaks -R spec -t 5000 test/*.test.js",
+    "test-cov": "cross-env NODE_ENV=test nyc npm run test",
     "ci": "npm run lint && npm run test-cov",
     "lint": "eslint index.js test",
     "autod": "autod -w --prefix '^'"
   },
+  "keywords": [
+    "koa",
+    "koajs",
+    "@koa/cors",
+    "cors",
+    "koa-cors",
+    "middleware",
+    "Cross-Origin Resource Sharing"
+  ],
+  "author": {
+    "name": "fengmk2",
+    "email": "fengmk2@gmail.com",
+    "url": "http://fengmk2.com"
+  },
+  "contributors": [
+    {
+      "name": "Imed Jaberi",
+      "email": "imed-jaberi@outlook.com",
+      "url": "https://www.3imed-jaberi.com"
+    }
+  ],
+  "license": "MIT",
   "dependencies": {
     "vary": "^1.1.2"
   },
   "devDependencies": {
     "autod": "*",
-    "eslint": "^5.15.1",
-    "eslint-config-egg": "^7.1.0",
-    "istanbul": "*",
-    "koa": "^2.5.1",
-    "mocha": "3",
-    "supertest": "^3.1.0"
+    "cross-env": "^7.0.3",
+    "eslint": "^7.30.0",
+    "eslint-config-egg": "^9.0.0",
+    "koa": "^2.13.1",
+    "mocha": "^9.0.2",
+    "nyc": "^15.1.0",
+    "supertest": "^6.1.3"
+  },
+  "engines": {
+    "node": ">= 10"
   },
   "homepage": "https://github.com/koajs/cors",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/koajs/cors.git"
-  },
   "bugs": {
     "url": "https://github.com/koajs/cors/issues"
-  },
-  "keywords": [
-    "cors",
-    "koa-cors",
-    "Cross-Origin Resource Sharing",
-    "@koa/cors",
-    "koa",
-    "koajs"
-  ],
-  "engines": {
-    "node": ">= 8.0.0"
-  },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
-  "license": "MIT"
+  }
 }

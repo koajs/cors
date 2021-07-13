@@ -39,7 +39,7 @@ describe('cors.test.js', function() {
         .set('Origin', 'http://koajs.com')
         .set('Access-Control-Request-Method', 'PUT')
         .expect('Access-Control-Allow-Origin', 'http://koajs.com')
-        .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE,PATCH')
+        .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
         .expect(204, done);
     });
 
