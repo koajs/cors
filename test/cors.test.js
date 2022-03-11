@@ -79,6 +79,58 @@ describe('cors.test.js', function() {
     });
   });
 
+  describe('options.secureContext=true', function() {
+    const app = new Koa();
+    app.use(cors({
+      secureContext: true,
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should always set `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` on not OPTIONS', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Cross-Origin-Opener-Policy', 'same-origin')
+        .expect('Cross-Origin-Embedder-Policy', 'require-corp')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+
+    it('should always set `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` on OPTIONS', function(done) {
+      request(app.listen())
+        .options('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .expect('Cross-Origin-Opener-Policy', 'same-origin')
+        .expect('Cross-Origin-Embedder-Policy', 'require-corp')
+        .expect(204, done);
+    });
+  });
+
+  describe('options.secureContext=false', function() {
+    const app = new Koa();
+    app.use(cors({
+      secureContext: false,
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should not set `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy`', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect(res => {
+          assert(!('Cross-Origin-Opener-Policy' in res.headers));
+          assert(!('Cross-Origin-Embedder-Policy' in res.headers));
+        })
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
+
   describe('options.origin=function', function() {
     const app = new Koa();
     app.use(cors({

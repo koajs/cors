@@ -13,12 +13,15 @@ const vary = require('vary');
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean} credentials `Access-Control-Allow-Credentials`
  *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
+ *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
+ *    @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes
  * @return {Function} cors middleware
  * @api public
  */
 module.exports = function(options) {
   const defaults = {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+    secureContext: false,
   };
 
   options = {
@@ -43,7 +46,7 @@ module.exports = function(options) {
   }
 
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
-
+  
   return async function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps.
     // The request is outside the scope of this specification.
@@ -91,6 +94,11 @@ module.exports = function(options) {
         set('Access-Control-Expose-Headers', options.exposeHeaders);
       }
 
+      if (options.secureContext) {
+        set('Cross-Origin-Opener-Policy', 'same-origin');
+        set('Cross-Origin-Embedder-Policy', 'require-corp');
+      }
+
       if (!options.keepHeadersOnError) {
         return await next();
       }
@@ -131,6 +139,11 @@ module.exports = function(options) {
 
       if (options.allowMethods) {
         ctx.set('Access-Control-Allow-Methods', options.allowMethods);
+      }
+
+      if (options.secureContext) {
+        set('Cross-Origin-Opener-Policy', 'same-origin');
+        set('Cross-Origin-Embedder-Policy', 'require-corp');
       }
 
       let allowHeaders = options.allowHeaders;
