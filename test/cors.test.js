@@ -78,6 +78,51 @@ describe('cors.test.js', function() {
         .expect(200, done);
     });
   });
+const secureContextNotSet = (res) => {
+  if ('Cross-Origin-Opener-Policy' in res.headers) throw new Error("Cross-Origin-Opener-Policy should not be set");
+  if ('Cross-Origin-Embedder-Policy' in res.headers) throw new Error("'Cross-Origin-Embedder-Policy' should not be set");
+};
+const secureContextSet = (res) => {
+  if (!'Cross-Origin-Opener-Policy' in res.headers) throw new Error("Cross-Origin-Opener-Policy should  be set");
+  if (!'Cross-Origin-Embedder-Policy' in res.headers) throw new Error("'Cross-Origin-Embedder-Policy' should be set");
+};
+  describe('options.secureContext=true', function() {
+    const app = new Koa();
+    app.use(cors({
+      secureContext: true,
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should always set `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy`', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect(secureContextSet)
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
+
+  describe('options.secureContext=false', function() {
+    const app = new Koa();
+    app.use(cors({
+      secureContext: false,
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should not set `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy`', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect(secureContextNotSet)
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
 
   describe('options.origin=function', function() {
     const app = new Koa();

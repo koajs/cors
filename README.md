@@ -55,6 +55,7 @@ app.use(cors());
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
  *  - {Boolean|Function(ctx)} credentials `Access-Control-Allow-Credentials`, default is false.
  *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
+ *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
  * @return {Function} cors middleware
  * @api public
  */
