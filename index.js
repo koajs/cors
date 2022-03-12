@@ -11,7 +11,7 @@ const vary = require('vary');
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
  *  - {String|Number} maxAge `Access-Control-Max-Age` in seconds
- *  - {Boolean} credentials `Access-Control-Allow-Credentials`
+ *  - {Boolean|Function(ctx)} credentials `Access-Control-Allow-Credentials`
  *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
  *    @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes
