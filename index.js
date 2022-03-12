@@ -16,7 +16,7 @@ const vary = require('vary');
  *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
  *    @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes
  * @return {Function} cors middleware
- * @api public
+ * @public
  */
 module.exports = function(options) {
   const defaults = {
@@ -46,7 +46,7 @@ module.exports = function(options) {
   }
 
   options.keepHeadersOnError = options.keepHeadersOnError === undefined || !!options.keepHeadersOnError;
-  
+
   return async function cors(ctx, next) {
     // If the Origin header is not present terminate this set of steps.
     // The request is outside the scope of this specification.

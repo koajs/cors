@@ -10,14 +10,13 @@
     "test": "NODE_ENV=test mocha --check-leaks -R spec -t 5000 test/*.test.js",
     "test-cov": "NODE_ENV=test istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
-    "lint": "eslint index.js test",
-    "autod": "autod -w --prefix '^'"
+    "lint": "eslint index.js test"
   },
   "dependencies": {
     "vary": "^1.1.2"
   },
   "devDependencies": {
-    "autod": "*",
+    "egg-ci": "^1.19.0",
     "eslint": "^5.15.1",
     "eslint-config-egg": "^7.1.0",
     "istanbul": "*",
@@ -44,6 +43,13 @@
   "engines": {
     "node": ">= 8.0.0"
   },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
+  "ci": {
+    "version": "8, 10, 12, 14, 16",
+    "type": "github",
+    "os": {
+      "github": "linux"
+    }
+  },
+  "author": "fengmk2 <fengmk2@gmail.com> (http://github.com/fengmk2)",
   "license": "MIT"
 }
