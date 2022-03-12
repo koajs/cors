@@ -1,4 +1,13 @@
 
+3.2.0 / 2022-03-12
+==================
+
+**features**
+  * [[`134ec9b`](http://github.com/koajs/cors/commit/134ec9b54b18565cf8bba8c5e6b6639d7d7e43a3)] - feat: support secure context headers (Levi Tomes <<levi@userdevice.net>>)
+
+**others**
+  * [[`bcadb55`](http://github.com/koajs/cors/commit/bcadb5599905c28934ed3c28f866f6cdb3f77aee)] - test: run test on github action (fengmk2 <<fengmk2@gmail.com>>)
+
 3.1.0 / 2020-05-17
 ==================
 

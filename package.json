@@ -1,12 +1,13 @@
 {
   "name": "@koa/cors",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
     "index.js"
   ],
   "scripts": {
+    "contributor": "git-contributor",
     "test": "NODE_ENV=test mocha --check-leaks -R spec -t 5000 test/*.test.js",
     "test-cov": "NODE_ENV=test istanbul cover _mocha -- --check-leaks -t 5000 test/*.test.js",
     "ci": "npm run lint && npm run test-cov",
@@ -19,6 +20,7 @@
     "egg-ci": "^1.19.0",
     "eslint": "^5.15.1",
     "eslint-config-egg": "^7.1.0",
+    "git-contributor": "^1.0.10",
     "istanbul": "*",
     "koa": "^2.5.1",
     "mocha": "3",

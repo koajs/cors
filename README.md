@@ -2,19 +2,14 @@
 =======
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![Node.js CI](https://github.com/koajs/cors/actions/workflows/nodejs.yml/badge.svg)](https://github.com/koajs/cors/actions/workflows/nodejs.yml)
 [![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/@koa/cors.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@koa/cors
-[travis-image]: https://img.shields.io/travis/koajs/cors.svg?style=flat-square
-[travis-url]: https://travis-ci.org/koajs/cors
 [codecov-image]: https://codecov.io/github/koajs/cors/coverage.svg?branch=v2.x
 [codecov-url]: https://codecov.io/github/koajs/cors?branch=v2.x
-[david-image]: https://img.shields.io/david/koajs/cors.svg?style=flat-square
-[david-url]: https://david-dm.org/koajs/cors
 [download-image]: https://img.shields.io/npm/dm/@koa/cors.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@koa/cors
 
@@ -64,3 +59,16 @@ app.use(cors());
 ## License
 
 [MIT](./LICENSE)
+
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|[<img src="https://avatars.githubusercontent.com/u/1127384?v=4" width="100px;"/><br/><sub><b>omsmith</b></sub>](https://github.com/omsmith)<br/>|[<img src="https://avatars.githubusercontent.com/u/643505?v=4" width="100px;"/><br/><sub><b>jonathanong</b></sub>](https://github.com/jonathanong)<br/>|[<img src="https://avatars.githubusercontent.com/u/5622516?v=4" width="100px;"/><br/><sub><b>AlphaWong</b></sub>](https://github.com/AlphaWong)<br/>|[<img src="https://avatars.githubusercontent.com/u/178720?v=4" width="100px;"/><br/><sub><b>erikfried</b></sub>](https://github.com/erikfried)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|[<img src="https://avatars.githubusercontent.com/u/4184677?v=4" width="100px;"/><br/><sub><b>ltomes</b></sub>](https://github.com/ltomes)<br/>|[<img src="https://avatars.githubusercontent.com/u/372420?v=4" width="100px;"/><br/><sub><b>lfreneda</b></sub>](https://github.com/lfreneda)<br/>|[<img src="https://avatars.githubusercontent.com/u/170299?v=4" width="100px;"/><br/><sub><b>matthewmueller</b></sub>](https://github.com/matthewmueller)<br/>|[<img src="https://avatars.githubusercontent.com/u/6006498?v=4" width="100px;"/><br/><sub><b>PlasmaPower</b></sub>](https://github.com/PlasmaPower)<br/>|[<img src="https://avatars.githubusercontent.com/u/8369011?v=4" width="100px;"/><br/><sub><b>xg-wang</b></sub>](https://github.com/xg-wang)<br/>|[<img src="https://avatars.githubusercontent.com/u/12003270?v=4" width="100px;"/><br/><sub><b>lishengzxc</b></sub>](https://github.com/lishengzxc)<br/>|
+[<img src="https://avatars.githubusercontent.com/u/514097?v=4" width="100px;"/><br/><sub><b>mcohen75</b></sub>](https://github.com/mcohen75)<br/>
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Sat Mar 12 2022 23:53:42 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
