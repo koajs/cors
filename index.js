@@ -14,6 +14,7 @@ const vary = require('vary');
  *  - {Boolean|Function(ctx)} credentials `Access-Control-Allow-Credentials`
  *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
+ *  - {Boolean} privateNetworkAccess handle `Access-Control-Request-Private-Network` request by return `Access-Control-Allow-Private-Network`, default to false
  *    @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes
  * @return {Function} cors middleware
  * @public
@@ -135,6 +136,10 @@ module.exports = function(options) {
 
       if (options.maxAge) {
         ctx.set('Access-Control-Max-Age', options.maxAge);
+      }
+
+      if (options.privateNetworkAccess && ctx.get('Access-Control-Request-Private-Network')) {
+        ctx.set('Access-Control-Allow-Private-Network', 'true');
       }
 
       if (options.allowMethods) {

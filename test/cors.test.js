@@ -698,4 +698,93 @@ describe('cors.test.js', function() {
         .expect(500, done);
     });
   });
+
+  describe('options.privateNetworkAccess=false', function() {
+    const app = new Koa();
+    app.use(cors({
+      privateNetworkAccess: false,
+    }));
+
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should not set `Access-Control-Allow-Private-Network` on not OPTIONS', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .expect(res => {
+          assert(!('Access-Control-Allow-Private-Network' in res.headers));
+        })
+        .expect(200, done);
+    });
+
+    it('should not set `Access-Control-Allow-Private-Network` if `Access-Control-Request-Private-Network` not exist on OPTIONS', function(done) {
+      request(app.listen())
+        .options('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .expect(res => {
+          assert(!('Access-Control-Allow-Private-Network' in res.headers));
+        })
+        .expect(204, done);
+    });
+
+    it('should not set `Access-Control-Allow-Private-Network` if `Access-Control-Request-Private-Network` exist on OPTIONS', function(done) {
+      request(app.listen())
+        .options('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .set('Access-Control-Request-Private-Network', 'true')
+        .expect(res => {
+          assert(!('Access-Control-Allow-Private-Network' in res.headers));
+        })
+        .expect(204, done);
+    });
+  });
+
+  describe('options.privateNetworkAccess=true', function() {
+    const app = new Koa();
+    app.use(cors({
+      privateNetworkAccess: true,
+    }));
+
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should not set `Access-Control-Allow-Private-Network` on not OPTIONS', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .expect(res => {
+          assert(!('Access-Control-Allow-Private-Network' in res.headers));
+        })
+        .expect(200, done);
+    });
+
+    it('should not set `Access-Control-Allow-Private-Network` if `Access-Control-Request-Private-Network` not exist on OPTIONS', function(done) {
+      request(app.listen())
+        .options('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .expect(res => {
+          assert(!('Access-Control-Allow-Private-Network' in res.headers));
+        })
+        .expect(204, done);
+    });
+
+    it('should always set `Access-Control-Allow-Private-Network` if `Access-Control-Request-Private-Network` exist on OPTIONS', function(done) {
+      request(app.listen())
+        .options('/')
+        .set('Origin', 'http://koajs.com')
+        .set('Access-Control-Request-Method', 'PUT')
+        .set('Access-Control-Request-Private-Network', 'true')
+        .expect('Access-Control-Allow-Private-Network', 'true')
+        .expect(204, done);
+    });
+  });
+
 });
