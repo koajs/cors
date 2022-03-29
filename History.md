@@ -1,4 +1,13 @@
 
+3.3.0 / 2022-03-29
+==================
+
+**features**
+  * [[`c279fc3`](http://github.com/koajs/cors/commit/c279fc36e60f3b2835395d15c4604fa1b284fc5f)] - feat: Add support for "Private Network Access" (#83) (Chi Ma <<55783048+cma-skedulo@users.noreply.github.com>>)
+
+**others**
+  * [[`97d9220`](http://github.com/koajs/cors/commit/97d92207ae33aa2dbdd21d218ef836183194c257)] - chore: credentials jsdoc (#80) (Jing Yi Wang <<jyw@live.de>>)
+
 3.2.0 / 2022-03-12
 ==================
 
