@@ -51,6 +51,7 @@ app.use(cors());
  *  - {Boolean|Function(ctx)} credentials `Access-Control-Allow-Credentials`, default is false.
  *  - {Boolean} keepHeadersOnError Add set headers to `err.header` if an error is thrown
  *  - {Boolean} secureContext `Cross-Origin-Opener-Policy` & `Cross-Origin-Embedder-Policy` headers.', default is false
+ *  - {Boolean} privateNetworkAccess handle `Access-Control-Request-Private-Network` request by return `Access-Control-Allow-Private-Network`, default to false
  * @return {Function} cors middleware
  * @api public
  */
