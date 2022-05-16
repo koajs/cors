@@ -63,7 +63,8 @@ module.exports = function(options) {
     let origin;
     if (typeof options.origin === 'function') {
       origin = options.origin(ctx);
-      if (origin instanceof Promise) origin = await origin;
+      const isAsync = origin.constructor.name === 'AsyncFunction';
+      if (origin instanceof Promise || isAsync) origin = await origin;
       if (!origin) return await next();
     } else {
       origin = options.origin || requestOrigin;
