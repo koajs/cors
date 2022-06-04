@@ -62,7 +62,7 @@ module.exports = function(options) {
 
     let origin;
     if (typeof options.origin === 'function') {
-      origin = await Promise.resolve().then(() => options.origin(ctx));
+      origin = await options.origin(ctx);
       if (!origin) return await next();
     } else {
       origin = options.origin || requestOrigin;
@@ -70,7 +70,7 @@ module.exports = function(options) {
 
     let credentials;
     if (typeof options.credentials === 'function') {
-      credentials = await Promise.resolve().then(() => options.credentials(ctx));
+      credentials = await options.credentials(ctx);
     } else {
       credentials = !!options.credentials;
     }
