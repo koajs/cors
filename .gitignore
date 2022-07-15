@@ -5,6 +5,8 @@
 *.out
 *.pid
 *.gz
+.idea
+.DS_Store
 
 pids
 logs
