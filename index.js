@@ -70,15 +70,15 @@ module.exports = function(options) {
     }
 
     let credentials;
-    if (origin === '*') {
-      credentials = false
+    if (typeof options.credentials === 'function') {
+      credentials = options.credentials(ctx);
+      if (credentials instanceof Promise) credentials = await credentials;
     } else {
-      if (typeof options.credentials === 'function') {
-        credentials = options.credentials(ctx);
-        if (credentials instanceof Promise) credentials = await credentials;
-      } else {
-        credentials = !!options.credentials;
-      }
+      credentials = !!options.credentials;
+    }
+
+    if (credentials && origin === '*') {
+      origin = requestOrigin;
     }
 
     const headersSet = {};
