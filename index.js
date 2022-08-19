@@ -75,6 +75,10 @@ module.exports = function(options) {
       credentials = !!options.credentials;
     }
 
+    if (credentials && origin === '*') {
+      origin = requestOrigin;
+    }
+
     const headersSet = {};
 
     function set(key, value) {
