@@ -17,7 +17,7 @@
     "vary": "^1.1.2"
   },
   "devDependencies": {
-    "egg-ci": "^1.19.0",
+    "egg-ci": "^1.19.1",
     "eslint": "^5.15.1",
     "eslint-config-egg": "^7.1.0",
     "git-contributor": "^1.0.10",
@@ -46,7 +46,7 @@
     "node": ">= 8.0.0"
   },
   "ci": {
-    "version": "8, 10, 12, 14, 16",
+    "version": "8, 10, 12, 14, 16, 18",
     "type": "github",
     "os": {
       "github": "linux"

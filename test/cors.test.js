@@ -3,7 +3,7 @@
 const assert = require('assert');
 const Koa = require('koa');
 const request = require('supertest');
-const cors = require('../');
+const cors = require('..');
 
 describe('cors.test.js', function() {
   describe('default options', function() {
@@ -139,6 +139,46 @@ describe('cors.test.js', function() {
           return false;
         }
         return '*';
+      },
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should disable cors', function(done) {
+      request(app.listen())
+        .get('/forbin')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, function(err, res) {
+          assert(!err);
+          assert(!res.headers['access-control-allow-origin']);
+          done();
+        });
+    });
+
+    it('should set access-control-allow-origin to *', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect(200, done);
+    });
+  });
+
+  describe('options.origin=promise', function() {
+    const app = new Koa();
+    app.use(cors({
+      origin(ctx) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            if (ctx.url === '/forbin') {
+              return resolve(false);
+            }
+            return resolve('*');
+          }, 100);
+        });
       },
     }));
     app.use(function(ctx) {
