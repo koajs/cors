@@ -787,4 +787,46 @@ describe('cors.test.js', function() {
     });
   });
 
+  describe('options.origin=*, and options.credentials=true', function() {
+    const app = new Koa();
+    app.use(cors({
+      origin: '*',
+      credentials: true,
+    }));
+
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('Access-Control-Allow-Origin should be request.origin, and Access-Control-Allow-Credentials should be true', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Credentials', 'true')
+        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
+
+  describe('options.origin=*, and options.credentials=false', function() {
+    const app = new Koa();
+    app.use(cors({
+      origin: '*',
+      credentials: false,
+    }));
+
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('Access-Control-Allow-Origin should be *', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
 });
