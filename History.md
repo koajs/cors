@@ -1,4 +1,13 @@
 
+3.4.0 / 2022-08-19
+==================
+
+**others**
+  * [[`2cd4789`](http://github.com/koajs/cors/commit/2cd4789f66a64cd13228e7305cce9069bd2d1283)] - 🤖 TEST: Run test on Node.js 18 (#86) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`ae56e05`](http://github.com/koajs/cors/commit/ae56e054cb669c73784f8a12ab6413abca6eff57)] - Create codeql-analysis.yml (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`c4b5d21`](http://github.com/koajs/cors/commit/c4b5d21e0cf5ab76109be65f4b7267d0ccacce81)] - refactor: use friendlier promise checking (#84) (Swain Molster <<swain.molster@gmail.com>>)
+  * [[`fbe33bc`](http://github.com/koajs/cors/commit/fbe33bca26373965429356f02144507c31326cfc)] - 📖 DOC: Add privateNetworkAccess js to README (fengmk2 <<fengmk2@gmail.com>>)
+
 3.3.0 / 2022-03-29
 ==================
 
