@@ -201,6 +201,37 @@ describe('cors.test.js', function() {
         .expect('Access-Control-Allow-Origin', '*')
         .expect(200, done);
     });
+
+    it('behaves correctly when the return type is promise-like', function(done) {
+      class WrappedPromise {
+        constructor(...args) {
+          this.internalPromise = new Promise(...args);
+        }
+
+        then(onFulfilled) {
+          this.internalPromise.then(onFulfilled);
+        }
+      }
+
+      const app = new Koa()
+        .use(cors({
+          origin() {
+            return new WrappedPromise(resolve => {
+              return resolve('*');
+            });
+          },
+        }))
+        .use(function(ctx) {
+          ctx.body = { foo: 'bar' };
+        });
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect(200, done);
+    });
   });
 
   describe('options.exposeHeaders', function() {
@@ -448,6 +479,37 @@ describe('cors.test.js', function() {
         .set('Access-Control-Request-Method', 'DELETE')
         .expect('Access-Control-Allow-Credentials', 'true')
         .expect(204, done);
+    });
+
+    it('behaves correctly when the return type is promise-like', function(done) {
+      class WrappedPromise {
+        constructor(...args) {
+          this.internalPromise = new Promise(...args);
+        }
+
+        then(onFulfilled) {
+          this.internalPromise.then(onFulfilled);
+        }
+      }
+
+      const app = new Koa()
+        .use(cors({
+          credentials() {
+            return new WrappedPromise(resolve => {
+              resolve(true);
+            });
+          },
+        }))
+        .use(function(ctx) {
+          ctx.body = { foo: 'bar' };
+        });
+
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Credentials', 'true')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
     });
   });
 
