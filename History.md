@@ -1,4 +1,10 @@
 
+3.4.1 / 2022-08-19
+==================
+
+**fixes**
+  * [[`1205356`](http://github.com/koajs/cors/commit/12053567ef2caa8f4191298bc9d010017bb0f233)] - fix: must specify an origin value instead of "*" wildcard  (#85) (Tyreal Hu <<tyrealhu.fe@gmail.com>>)
+
 3.4.0 / 2022-08-19
 ==================
 

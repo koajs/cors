@@ -1,6 +1,6 @@
 {
   "name": "@koa/cors",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
