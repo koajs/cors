@@ -1,4 +1,10 @@
 
+3.4.2 / 2022-10-06
+==================
+
+**fixes**
+  * [[`2e8da5b`](http://github.com/koajs/cors/commit/2e8da5bd2acbc9c1adfabdea459982b3d5bdd31f)] - fix: Calling all options even if origin header is not present (#87) (Cleber Rossi <<cleberjoserossi@gmail.com>>)
+
 3.4.1 / 2022-08-19
 ==================
 
