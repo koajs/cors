@@ -77,6 +77,14 @@ describe('cors.test.js', function() {
         .expect({ foo: 'bar' })
         .expect(200, done);
     });
+
+    it('should always set `Access-Control-Allow-Origin` to *, even if no Origin is passed on request', function(done) {
+      request(app.listen())
+        .get('/')
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
   });
 
   describe('options.secureContext=true', function() {
