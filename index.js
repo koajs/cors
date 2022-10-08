@@ -58,6 +58,8 @@ module.exports = function(options) {
     // https://github.com/rs/cors/issues/10
     ctx.vary('Origin');
 
+    if (!requestOrigin) return await next();
+
     let origin;
     if (typeof options.origin === 'function') {
       origin = await options.origin(ctx);
