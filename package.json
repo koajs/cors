@@ -1,6 +1,6 @@
 {
   "name": "@koa/cors",
-  "version": "3.4.3",
+  "version": "4.0.0",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
   "files": [
@@ -17,13 +17,13 @@
     "vary": "^1.1.2"
   },
   "devDependencies": {
-    "egg-ci": "^1.19.1",
-    "eslint": "^5.15.1",
-    "eslint-config-egg": "^7.1.0",
+    "egg-ci": "^2.1.0",
+    "eslint": "^8.25.0",
+    "eslint-config-egg": "^12.0.0",
     "git-contributor": "^1.0.10",
     "istanbul": "*",
     "koa": "^2.5.1",
-    "mocha": "3",
+    "mocha": "^3.5.3",
     "supertest": "^3.1.0"
   },
   "homepage": "https://github.com/koajs/cors",
@@ -43,14 +43,11 @@
     "koajs"
   ],
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 14.0.0"
   },
   "ci": {
-    "version": "8, 10, 12, 14, 16, 18",
-    "type": "github",
-    "os": {
-      "github": "linux"
-    }
+    "version": "14, 16, 18",
+    "os": "linux"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://github.com/fengmk2)",
   "license": "MIT"
