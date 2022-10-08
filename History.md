@@ -1,4 +1,10 @@
 
+3.4.3 / 2022-10-08
+==================
+
+**others**
+  * [[`208b86c`](http://github.com/koajs/cors/commit/208b86c893013d65e4479219aae0763b807bc8a6)] - Revert "fix: Calling all options even if origin header is not present (#87)" (fengmk2 <<fengmk2@gmail.com>>)
+
 3.4.2 / 2022-10-06
 ==================
 
