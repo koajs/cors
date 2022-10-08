@@ -1,4 +1,13 @@
 
+4.0.0 / 2022-10-08
+==================
+
+**fixes**
+  * [[`7358ab3`](http://github.com/koajs/cors/commit/7358ab381af6413013938f49c56ac79a7453d35c)] - fix: Calling all options even if origin header is not present (#87) (Cleber Rossi <<cleberjoserossi@gmail.com>>)
+
+**others**
+  * [[`d19090f`](http://github.com/koajs/cors/commit/d19090fc8591059895fa9c606967d3a67fd3c5b8)] - refactor: [BREAKING] drop node 8, 10, 12 support (#88) (fengmk2 <<fengmk2@gmail.com>>)
+
 3.4.3 / 2022-10-08
 ==================
 
