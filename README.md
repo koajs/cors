@@ -1,5 +1,4 @@
-@koa/cors
-=======
+# @koa/cors
 
 [![NPM version][npm-image]][npm-url]
 [![Node.js CI](https://github.com/koajs/cors/actions/workflows/nodejs.yml/badge.svg)](https://github.com/koajs/cors/actions/workflows/nodejs.yml)
@@ -43,7 +42,8 @@ app.use(cors());
  * CORS middleware
  *
  * @param {Object} [options]
- *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is request Origin header
+ *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is '*'
+ *    If `credentials` set and return `true, the `origin` default value will set to the request `Origin` header
  *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE,PATCH'
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
@@ -55,6 +55,18 @@ app.use(cors());
  * @return {Function} cors middleware
  * @api public
  */
+```
+
+## Breaking change between 5.0 and 4.0
+
+The default `origin` is set to `*`, if you want to keep the 4.0 behavior, you can set the `origin` handler like this:
+
+```js
+app.use(cors({
+  origin(ctx) {
+    return ctx.get('Origin') || '*';
+  },
+}));
 ```
 
 ## License

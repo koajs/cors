@@ -1,5 +1,3 @@
-'use strict';
-
 const assert = require('assert');
 const Koa = require('koa');
 const request = require('supertest');
@@ -13,22 +11,19 @@ describe('cors.test.js', function() {
       ctx.body = { foo: 'bar' };
     });
 
-    it('should not set `Access-Control-Allow-Origin` when request Origin header missing', function(done) {
+    it('should set `Access-Control-Allow-Origin` to `*` when request Origin header missing', function(done) {
       request(app.listen())
         .get('/')
         .expect({ foo: 'bar' })
-        .expect(200, function(err, res) {
-          assert(!err);
-          assert(!res.headers['access-control-allow-origin']);
-          done();
-        });
+        .expect('access-control-allow-origin', '*')
+        .expect(200, done);
     });
 
-    it('should set `Access-Control-Allow-Origin` to request origin header', function(done) {
+    it('should set `Access-Control-Allow-Origin` to `*`', function(done) {
       request(app.listen())
         .get('/')
         .set('Origin', 'http://koajs.com')
-        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', '*')
         .expect({ foo: 'bar' })
         .expect(200, done);
     });
@@ -38,7 +33,7 @@ describe('cors.test.js', function() {
         .options('/')
         .set('Origin', 'http://koajs.com')
         .set('Access-Control-Request-Method', 'PUT')
-        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', '*')
         .expect('Access-Control-Allow-Methods', 'GET,HEAD,PUT,POST,DELETE,PATCH')
         .expect(204, done);
     });
@@ -79,6 +74,44 @@ describe('cors.test.js', function() {
     });
 
     it('should always set `Access-Control-Allow-Origin` to *, even if no Origin is passed on request', function(done) {
+      request(app.listen())
+        .get('/')
+        .expect('Access-Control-Allow-Origin', '*')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+  });
+
+  describe('options.origin set the request Origin header', function() {
+    const app = new Koa();
+    app.use(cors({
+      origin(ctx) {
+        return ctx.get('Origin') || '*';
+      },
+    }));
+    app.use(function(ctx) {
+      ctx.body = { foo: 'bar' };
+    });
+
+    it('should set `Access-Control-Allow-Origin` to request `Origin` header', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('Origin', 'http://koajs.com')
+        .expect('Access-Control-Allow-Origin', 'http://koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+
+    it('should set `Access-Control-Allow-Origin` to request `origin` header', function(done) {
+      request(app.listen())
+        .get('/')
+        .set('origin', 'http://origin.koajs.com')
+        .expect('Access-Control-Allow-Origin', 'http://origin.koajs.com')
+        .expect({ foo: 'bar' })
+        .expect(200, done);
+    });
+
+    it('should set `Access-Control-Allow-Origin` to `*`, even if no Origin is passed on request', function(done) {
       request(app.listen())
         .get('/')
         .expect('Access-Control-Allow-Origin', '*')
@@ -651,7 +684,11 @@ describe('cors.test.js', function() {
   describe('options.headersKeptOnError', function() {
     it('should keep CORS headers after an error', function(done) {
       const app = new Koa();
-      app.use(cors());
+      app.use(cors({
+        origin(ctx) {
+          return ctx.get('Origin') || '*';
+        },
+      }));
       app.use(function(ctx) {
         ctx.body = { foo: 'bar' };
         throw new Error('Whoops!');
@@ -668,7 +705,11 @@ describe('cors.test.js', function() {
 
     it('should not affect OPTIONS requests', function(done) {
       const app = new Koa();
-      app.use(cors());
+      app.use(cors({
+        origin(ctx) {
+          return ctx.get('Origin') || '*';
+        },
+      }));
       app.use(function(ctx) {
         ctx.body = { foo: 'bar' };
         throw new Error('Whoops!');
@@ -684,7 +725,11 @@ describe('cors.test.js', function() {
 
     it('should not keep unrelated headers', function(done) {
       const app = new Koa();
-      app.use(cors());
+      app.use(cors({
+        origin(ctx) {
+          return ctx.get('Origin') || '*';
+        },
+      }));
       app.use(function(ctx) {
         ctx.body = { foo: 'bar' };
         ctx.set('X-Example', 'Value');
@@ -752,6 +797,7 @@ describe('cors.test.js', function() {
         .expect(200, done);
     });
   });
+
   describe('other middleware has set vary header on Error', function() {
     it('should append `Origin to other `Vary` header', function(done) {
       const app = new Koa();

@@ -46,7 +46,7 @@
     "node": ">= 14.0.0"
   },
   "ci": {
-    "version": "14, 16, 18",
+    "version": "14, 16, 18, 20",
     "os": "linux"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://github.com/fengmk2)",

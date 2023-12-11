@@ -1,12 +1,11 @@
-'use strict';
-
 const vary = require('vary');
 
 /**
  * CORS middleware
  *
  * @param {Object} [options]
- *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is request Origin header
+ *  - {String|Function(ctx)} origin `Access-Control-Allow-Origin`, default is '*'
+ *    If `credentials` set and return `true, the `origin` default value will set to the request `Origin` header
  *  - {String|Array} allowMethods `Access-Control-Allow-Methods`, default is 'GET,HEAD,PUT,POST,DELETE,PATCH'
  *  - {String|Array} exposeHeaders `Access-Control-Expose-Headers`
  *  - {String|Array} allowHeaders `Access-Control-Allow-Headers`
@@ -61,9 +60,11 @@ module.exports = function(options) {
     let origin;
     if (typeof options.origin === 'function') {
       origin = await options.origin(ctx);
-      if (!origin) return await next();
+      if (!origin) {
+        return await next();
+      }
     } else {
-      origin = options.origin || requestOrigin;
+      origin = options.origin || '*';
     }
 
     let credentials;
