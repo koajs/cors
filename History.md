@@ -1,4 +1,10 @@
 
+5.0.0 / 2023-12-11
+==================
+
+**others**
+  * [[`f31dac9`](http://github.com/koajs/cors/commit/f31dac99f5355c41e7d4dd3c4a80c5f154941a11)] - Merge pull request from GHSA-qxrj-hx23-xp82 (fengmk2 <<suqian.yf@antgroup.com>>)
+
 4.0.0 / 2022-10-08
 ==================
 
