@@ -24,7 +24,9 @@ $ npm install @koa/cors --save
 
 Enable cors with default options:
 
-- origin: request Origin header
+- origin: `*` (v4 and before: the request's Origin header). This means that **by default the requests from all origin webpages will be allowed**.
+  If you're running a generic API server, this is what you want, but otherwise you should look into changing the default to something more
+  suitable to your application.
 - allowMethods: GET,HEAD,PUT,POST,DELETE,PATCH
 
 ```js
@@ -57,7 +59,7 @@ app.use(cors());
  */
 ```
 
-## Breaking change between 5.0 and 4.0
+## Breaking change between 4.0 and 5.0
 
 The default `origin` is set to `*`, if you want to keep the 4.0 behavior, you can set the `origin` handler like this:
 
