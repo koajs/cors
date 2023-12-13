@@ -11,6 +11,7 @@
 [codecov-url]: https://codecov.io/github/koajs/cors?branch=v2.x
 [download-image]: https://img.shields.io/npm/dm/@koa/cors.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@koa/cors
+<a href="https://communityinviter.com/apps/koa-js/koajs" rel="KoaJs Slack Community">![KoaJs Slack](https://img.shields.io/badge/Koa.Js-Slack%20Channel-Slack.svg?longCache=true&style=for-the-badge)</a>
 
 [Cross-Origin Resource Sharing(CORS)](https://developer.mozilla.org/en/docs/Web/HTTP/Access_control_CORS) for koa
 
