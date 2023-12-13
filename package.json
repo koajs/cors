@@ -3,6 +3,7 @@
   "version": "5.0.0",
   "description": "Cross-Origin Resource Sharing(CORS) for koa",
   "main": "index.js",
+  "typings": "index.d.ts",
   "files": [
     "index.js"
   ],
